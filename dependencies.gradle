@@ -1,0 +1,6 @@
+ext.versions = [
+        material    :   "1.0.0-rc01",
+        leakCanary  :   "2.0-beta-3",
+        timber      :   "4.7.1",
+        dagger      :   "2.24"
+]
