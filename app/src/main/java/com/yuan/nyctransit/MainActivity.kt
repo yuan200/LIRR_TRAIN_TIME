@@ -25,19 +25,14 @@ class MainActivity : AppCompatActivity() {
                     Log.d("navigation", "navigation_home")
                     Timber.d("navigation_home")
                     Toast.makeText(this, "navigation_honme", Toast.LENGTH_LONG).show()
-//                    true
                 }
                 R.id.navigation_dashboard -> {
                     Toast.makeText(this, "navigation_dashboard", Toast.LENGTH_LONG).show()
-//                    true
                 }
                 R.id.navigation_notifications -> {
-                    Toast.makeText(this, "navigation_notifications", Toast.LENGTH_LONG).show()
-//                    true
                 }
                 else -> {
                     Toast.makeText(this, "navigation_else", Toast.LENGTH_LONG).show()
-//                    false
                 }
             }
             return@setOnNavigationItemSelectedListener true
