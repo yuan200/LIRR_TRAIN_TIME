@@ -1,4 +1,4 @@
-package com.yuan.nyctransit.di
+package com.yuan.nyctransit.core.di
 
 import com.yuan.nyctransit.MapsActivity
 import dagger.Module

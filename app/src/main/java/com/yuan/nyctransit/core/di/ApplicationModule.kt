@@ -1,4 +1,4 @@
-package com.yuan.nyctransit.di
+package com.yuan.nyctransit.core.di
 
 import android.content.Context
 import com.yuan.nyctransit.AndroidApplication

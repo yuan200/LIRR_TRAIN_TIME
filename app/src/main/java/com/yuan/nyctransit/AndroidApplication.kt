@@ -1,8 +1,8 @@
 package com.yuan.nyctransit
 import android.app.Application
-import com.yuan.nyctransit.di.ApplicationComponent
-import com.yuan.nyctransit.di.ApplicationModule
-import com.yuan.nyctransit.di.DaggerApplicationComponent
+import com.yuan.nyctransit.core.di.ApplicationComponent
+import com.yuan.nyctransit.core.di.ApplicationModule
+import com.yuan.nyctransit.core.di.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector

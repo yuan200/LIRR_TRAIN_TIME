@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.yuan.nyctransit.AndroidApplication
 import com.yuan.nyctransit.Permissions.PermissionsManager
-import com.yuan.nyctransit.di.ApplicationComponent
+import com.yuan.nyctransit.core.di.ApplicationComponent
 import javax.inject.Inject
 
 abstract class PermissionsActivity : AppCompatActivity() {
