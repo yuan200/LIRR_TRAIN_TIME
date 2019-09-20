@@ -8,35 +8,19 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.yuan.nyctransit.platform.PermissionsActivity
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : PermissionsActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        navView.setOnNavigationItemSelectedListener {it ->
-            when (it.itemId) {
-                R.id.navigation_home -> {
-                    Log.d("navigation", "navigation_home")
-                    Timber.d("navigation_home")
-                    Toast.makeText(this, "navigation_honme", Toast.LENGTH_LONG).show()
-                }
-                R.id.navigation_dashboard -> {
-                    Toast.makeText(this, "navigation_dashboard", Toast.LENGTH_LONG).show()
-                }
-                R.id.navigation_notifications -> {
-                }
-                else -> {
-                    Toast.makeText(this, "navigation_else", Toast.LENGTH_LONG).show()
-                }
-            }
-            return@setOnNavigationItemSelectedListener true
-        }
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
@@ -48,5 +32,18 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        //request location permission
+        if (!permissionsManager.hasLocationPermission()) {
+            permissionsManager.requestLocationPermmission()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        permissionsManager.processResult(requestCode, permissions, grantResults)
     }
 }

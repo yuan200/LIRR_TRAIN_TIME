@@ -1,5 +1,6 @@
 package com.yuan.nyctransit.ui.dashboard
 
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -19,7 +22,12 @@ import com.yuan.nyctransit.R
 class DashboardFragment : Fragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
+
     private lateinit var mMap: GoogleMap
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var currentLocation: Location
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,13 +42,22 @@ class DashboardFragment : Fragment() {
         supportMapFragment.getMapAsync(OnMapReadyCallback {
             mMap = it
 
-            val sydney = LatLng(-34.0, 151.0)
-            mMap.addMarker(MarkerOptions().position(sydney).title("Maker in Sydney"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 
         })
-
-
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!).apply {
+            lastLocation.addOnSuccessListener {
+                currentLocation = it
+
+                val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
+                mMap.addMarker(MarkerOptions().position(latlng).title("Maker in Sydney"))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 12f))
+            }
+        }
+
     }
 }
