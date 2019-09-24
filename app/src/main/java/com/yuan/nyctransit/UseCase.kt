@@ -1,8 +1,9 @@
 package com.yuan.nyctransit
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import com.yuan.nyctransit.core.exception.Failure
+import com.yuan.nyctransit.core.functional.Either
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 abstract class UseCase<out Type, in Params> where Type: Any {
 
@@ -14,9 +15,10 @@ abstract class UseCase<out Type, in Params> where Type: Any {
      * launch(UI) { onResult(job.await()) }
      */
     operator fun invoke(params: Params, onResult: (Either<Failure, Type>) -> Unit = {}) {
-        val job = GlobalScope.async { run(params) }
-        GlobalScope.launch { onResult(job.await()) }
+        val job = CoroutineScope(Dispatchers.Default).async { run(params) }
+        CoroutineScope(Dispatchers.Main).launch { onResult(job.await()) }
     }
+
 
     class None
 }

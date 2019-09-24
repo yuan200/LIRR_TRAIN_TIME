@@ -1,14 +1,9 @@
 package com.yuan.nyctransit
 
-import android.app.ProgressDialog.show
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.yuan.nyctransit.platform.PermissionsActivity
