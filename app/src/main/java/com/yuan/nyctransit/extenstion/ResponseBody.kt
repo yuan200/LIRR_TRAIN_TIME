@@ -1,6 +1,8 @@
 package com.yuan.nyctransit.extenstion
 
 import android.content.Context
+import android.util.Log
+import com.google.transit.realtime.GtfsRealtime
 import okhttp3.ResponseBody
 import timber.log.Timber
 import java.io.*
@@ -24,8 +26,17 @@ fun ResponseBody.writeResponseBodyToDisk( context: Context): Boolean {
             outputStream = FileOutputStream(file)
 
             while (true) {
-                val read = inputStream.read(fileReader)
 
+                val feed: GtfsRealtime.FeedMessage = GtfsRealtime.FeedMessage.parseFrom(inputStream)
+
+                for (item in feed.entityList) {
+                    if (item.hasTripUpdate()) {
+                        Timber.d(item.tripUpdate.toString())
+                        Log.d("tripUpdate", item.tripUpdate.toString())
+                    }
+                }
+
+                val read = inputStream.read(fileReader)
                 if (read == -1) break
 
                 outputStream.write(fileReader, 0, read)

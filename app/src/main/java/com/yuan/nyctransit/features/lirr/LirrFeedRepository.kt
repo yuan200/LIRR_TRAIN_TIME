@@ -8,6 +8,7 @@ import com.yuan.nyctransit.extenstion.writeResponseBodyToDisk
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import retrofit2.Call
+import timber.log.Timber
 import javax.inject.Inject
 
 interface LirrFeedRepository {
@@ -18,6 +19,7 @@ interface LirrFeedRepository {
                         private val service: LirrService) : LirrFeedRepository {
 
         override fun lirrFeed(context: Context): Either<Failure, Boolean> {
+            Timber.d("calling lirrFeed...")
             return when (networkHandler.isConnected) {
                 true -> request(service.lirrFeed(), { it.writeResponseBodyToDisk(context)}, ResponseBody.create(
                     MediaType.parse("Jason"),toString()) )
