@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yuan.nyctransit.R
 
-class DashboardFragment : Fragment() {
+class MapFragment : Fragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
 
@@ -51,7 +51,10 @@ class DashboardFragment : Fragment() {
         super.onResume()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!).apply {
             lastLocation.addOnSuccessListener {
-                currentLocation = it
+                currentLocation = it ?: Location("empty").apply {
+                    latitude = 0.0
+                    longitude = 0.0
+                }
 
                 val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
                 mMap.addMarker(MarkerOptions().position(latlng).title("Maker in Sydney"))
