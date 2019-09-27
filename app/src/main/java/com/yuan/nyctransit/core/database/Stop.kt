@@ -1,10 +1,10 @@
 package com.yuan.nyctransit.core.database
 
-data class Stop(val stopId : String,
-                val stopName : String,
-                val stopDesc : String,
-                val stopLat : String,
-                val stopLon : String,
-                val stopUrl : String,
-                val wheelchairBoarding : Int) {
+data class Stop(var stopId : String,
+                var stopName : String,
+                var stopDesc : String,
+                var stopLat : String,
+                var stopLon : String,
+                var stopUrl : String,
+                var wheelchairBoarding : Int) {
 }

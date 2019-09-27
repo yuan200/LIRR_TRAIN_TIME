@@ -1,9 +1,9 @@
 package com.yuan.nyctransit.core.database
 
-data class Trip(val routeId : String,
-                val serviceId : String,
-                val tripHeadsign : String,
-                val tripShortName : String,
-                val directionId : String,
-                val shapeId : String) {
+data class Trip(var routeId : String,
+                var serviceId : String,
+                var tripHeadsign : String,
+                var tripShortName : String,
+                var directionId : String,
+                var shapeId : String) {
 }

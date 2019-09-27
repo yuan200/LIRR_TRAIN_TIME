@@ -1,8 +1,8 @@
 package com.yuan.nyctransit.core.database
 
-data class StopTime(val tripId : String,
-                    val arrivalTime : String,
-                    val departureTime : String,
-                    val stopId : String,
-                    val stopSequence : Int) {
+data class StopTime(var tripId : String,
+                    var arrivarTime : String,
+                    var departureTime : String,
+                    var stopId : String,
+                    var stopSequence : Int) {
 }

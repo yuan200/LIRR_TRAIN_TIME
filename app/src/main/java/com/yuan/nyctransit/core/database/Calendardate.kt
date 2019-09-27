@@ -1,6 +1,6 @@
 package com.yuan.nyctransit.core.database
 
-data class Calendardate(val serviceId : String,
-                        val date : Int,
-                        val exceptionType : String) {
+data class Calendardate(var serviceId : String,
+                        var date : Int,
+                        var exceptionType : String) {
 }

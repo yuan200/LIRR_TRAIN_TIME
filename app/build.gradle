@@ -80,6 +80,9 @@ dependencies {
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
 
+    //gson
+    implementation "com.google.code.gson:gson:${versions.gson}"
+
     implementation "com.google.transit:gtfs-realtime-bindings:0.0.4"
 
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
