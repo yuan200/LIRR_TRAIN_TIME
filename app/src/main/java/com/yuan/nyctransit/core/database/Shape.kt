@@ -1,7 +1,10 @@
 package com.yuan.nyctransit.core.database
 
-data class Shape(var shapeId : String,
-                 var shapePt_lat : String,
-                 var shapePt_lon : String,
-                 var shapePt_sequence : Int) {
-}
+import com.google.gson.annotations.SerializedName
+
+data class Shape(
+    @SerializedName("shape_id") var shapeId: String,
+    @SerializedName("shape_pt_lat") var shapePtLat: String,
+    @SerializedName("shape_pt_lon") var shapePtLon: String,
+    @SerializedName("shape_pt_sequence") var shapePtSequence: Int
+)

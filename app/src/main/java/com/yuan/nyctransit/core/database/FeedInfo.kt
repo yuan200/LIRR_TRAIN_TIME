@@ -1,8 +1,12 @@
 package com.yuan.nyctransit.core.database
 
-data class FeedInfo(var feedPublisherName : String,
-                    var feedPublisherUrl : String,
-                    var feedTimezone : String,
-                    var feedLang : String,
-                    var feedVersion : String) {
+import com.google.gson.annotations.SerializedName
+
+data class FeedInfo(
+    @SerializedName("feed_publisher_name") var feedPublisherName: String,
+    @SerializedName("feed_publisher_url") var feedPublisherUrl: String,
+    @SerializedName("feed_timezone") var feedTimezone: String,
+    @SerializedName("feed_lang") var feedLang: String,
+    @SerializedName("feed_version") var feedVersion: String
+) {
 }

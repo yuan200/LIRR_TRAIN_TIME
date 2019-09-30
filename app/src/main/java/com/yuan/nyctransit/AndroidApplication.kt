@@ -6,6 +6,7 @@ import com.yuan.nyctransit.core.di.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import timber.log.Timber
 import javax.inject.Inject
 
 class AndroidApplication: Application(), HasAndroidInjector {
@@ -22,6 +23,10 @@ class AndroidApplication: Application(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
         this.injectMembers()
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
