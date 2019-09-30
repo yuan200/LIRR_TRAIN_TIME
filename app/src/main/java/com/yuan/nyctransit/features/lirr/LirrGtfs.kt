@@ -9,8 +9,12 @@ data class LirrGtfs(
     @SerializedName("agency_id") var agencyId: String,
     @SerializedName("feed_version") var feedVersion: String,
     var revised: String,
-    var gtfs: Gtfs
-)
+    var gtfs: Gtfs? //todo is nullable ok here
+) {
+    companion object {
+        fun empty(): LirrGtfs = LirrGtfs("", "","",null)
+    }
+}
 
 data class Gtfs(
     @SerializedName("feed_info") var feedInfo: FeedInfo,

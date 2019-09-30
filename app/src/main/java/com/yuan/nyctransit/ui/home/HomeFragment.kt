@@ -17,8 +17,7 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var homeViewModel: HomeViewModel
 
-    @Inject
-    lateinit var lirrFedd: GetLirrFeed
+    @Inject lateinit var lirrFedd: GetLirrFeed
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

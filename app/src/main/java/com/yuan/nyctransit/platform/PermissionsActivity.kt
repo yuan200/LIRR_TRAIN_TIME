@@ -5,12 +5,15 @@ import android.os.Bundle
 import com.yuan.nyctransit.AndroidApplication
 import com.yuan.nyctransit.Permissions.PermissionsManager
 import com.yuan.nyctransit.core.di.ApplicationComponent
+import com.yuan.nyctransit.features.lirr.GetLirrGtfs
 import javax.inject.Inject
 
 abstract class PermissionsActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var permissionsManager: PermissionsManager
+    //todo this is not working if I put it inside main activity
+    @Inject lateinit var lirrGtfs : GetLirrGtfs
+
+    @Inject lateinit var permissionsManager: PermissionsManager
 
     val appComponent: ApplicationComponent by lazy(mode = LazyThreadSafetyMode.NONE) {
         (this.application as AndroidApplication).appComponent

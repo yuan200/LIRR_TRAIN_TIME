@@ -6,8 +6,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.yuan.nyctransit.core.di.ApplicationComponent
+import com.yuan.nyctransit.features.lirr.GetLirrGtfs
+import com.yuan.nyctransit.features.lirr.LirrGtfsRepository
 import com.yuan.nyctransit.platform.PermissionsActivity
+import dagger.android.AndroidInjection
 import timber.log.Timber
+import javax.inject.Inject
 
 class MainActivity : PermissionsActivity(){
 
@@ -32,6 +37,11 @@ class MainActivity : PermissionsActivity(){
         if (!permissionsManager.hasLocationPermission()) {
             permissionsManager.requestLocationPermmission()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lirrGtfs(true)
     }
 
     override fun onRequestPermissionsResult(

@@ -6,10 +6,12 @@ import com.yuan.nyctransit.BuildConfig
 import com.yuan.nyctransit.features.lirr.LirrFeedRepository
 import com.yuan.nyctransit.features.lirr.LirrGtfs
 import com.yuan.nyctransit.features.lirr.LirrGtfsApi
+import com.yuan.nyctransit.features.lirr.LirrGtfsRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -27,9 +29,13 @@ class ApplicationModule(private val application: AndroidApplication) {
             .build()
     }
 
+    @Provides @Singleton fun provideLirrGtfsRepository(dataSource: LirrGtfsRepository.Network)
+    : LirrGtfsRepository = dataSource
+
     @Provides @Named("webMta") @Singleton fun provideLirrGtfsRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(LirrGtfsApi.link)
+            .addConverterFactory(GsonConverterFactory.create())
             .client(createClient())
             .build()
     }

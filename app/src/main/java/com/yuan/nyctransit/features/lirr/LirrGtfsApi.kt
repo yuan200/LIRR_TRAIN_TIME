@@ -5,7 +5,7 @@ import retrofit2.Call
 
 interface LirrGtfsApi {
     companion object {
-        val link = "http://web.mta.info/developers/data/lirr/lirr_gtfs.json"
+        val link = "http://web.mta.info"
     }
 
     @GET("developers/data/lirr/lirr_gtfs.json")

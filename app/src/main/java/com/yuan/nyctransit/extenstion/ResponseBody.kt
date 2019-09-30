@@ -32,7 +32,7 @@ fun ResponseBody.writeResponseBodyToDisk( context: Context): Boolean {
                 for (item in feed.entityList) {
                     if (item.hasTripUpdate()) {
                         Timber.d(item.tripUpdate.toString())
-                        Log.d("tripUpdate", item.tripUpdate.toString())
+//                        Log.d("tripUpdate", item.tripUpdate.toString())
                     }
                 }
 

@@ -83,6 +83,9 @@ dependencies {
     //gson
     implementation "com.google.code.gson:gson:${versions.gson}"
 
+    //gson convertor
+    implementation "com.squareup.retrofit2:converter-gson:${versions.gsonConverter}"
+
     implementation "com.google.transit:gtfs-realtime-bindings:0.0.4"
 
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
