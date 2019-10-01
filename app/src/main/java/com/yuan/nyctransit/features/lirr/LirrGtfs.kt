@@ -24,11 +24,9 @@ data class LirrGtfs(
 
 }
 fun LirrGtfs.saveToDB(context: Context) {
-    //todo remove hardcode db name
-    //todo is this a singleton db?
-    val db = Room.databaseBuilder(context, LirrGtfsBase::class.java, "LirrGtfsTable.db").build()
+    val db = LirrGtfsBase.getInstance(context)
     Timber.i("saving into database")
-    db.LirrGtfsDao().insert(this)
+    db!!.LirrGtfsDao().insert(this)
     val result = db.LirrGtfsDao().getAll()
     result.toString()
 }

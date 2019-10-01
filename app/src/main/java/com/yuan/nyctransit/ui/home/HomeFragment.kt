@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.core.platform.BaseFragment
 import com.yuan.nyctransit.features.lirr.GetLirrFeed
+import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment() {
@@ -21,7 +23,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
+        AndroidSupportInjection.inject(this)
     }
 
     override fun onCreateView(

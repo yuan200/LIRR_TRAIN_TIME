@@ -6,6 +6,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.core.di.ApplicationComponent
 import com.yuan.nyctransit.features.lirr.GetLirrGtfs
 import com.yuan.nyctransit.features.lirr.LirrGtfsRepository
@@ -41,7 +42,8 @@ class MainActivity : PermissionsActivity(){
 
     override fun onResume() {
         super.onResume()
-        lirrGtfs(true)
+        val db = LirrGtfsBase.getInstance(this)
+        if (db?.LirrGtfsDao()?.getRevised().isNullOrEmpty()) lirrGtfs(true)
     }
 
     override fun onRequestPermissionsResult(

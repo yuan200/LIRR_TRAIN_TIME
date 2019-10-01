@@ -6,14 +6,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.yuan.nyctransit.features.lirr.LirrGtfs
 
-//todo set exportSchema = true
-@Database(entities = arrayOf(LirrGtfs::class), version = 1, exportSchema = false)
+//todo checkout room export schema
+@Database(entities = arrayOf(LirrGtfs::class), version = 1 )
 abstract class LirrGtfsBase : RoomDatabase() {
     abstract fun LirrGtfsDao(): LirrGtfsDao
 
     companion object {
         private var INSTANCE: LirrGtfsBase? = null
 
+        //todo can we use kotlin singleton object here
         fun getInstance(context: Context): LirrGtfsBase? {
             if (INSTANCE == null) {
                 synchronized(LirrGtfsBase::class) {

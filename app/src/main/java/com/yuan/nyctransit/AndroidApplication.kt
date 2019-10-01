@@ -11,7 +11,6 @@ import javax.inject.Inject
 
 class AndroidApplication: Application(), HasAndroidInjector {
 
-
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
     val appComponent : ApplicationComponent by lazy(mode = LazyThreadSafetyMode.NONE) {
         DaggerApplicationComponent

@@ -12,8 +12,12 @@ interface LirrGtfsDao {
     @Query("SELECT * from gtfs_overview")
     fun getAll(): List<LirrGtfs>
 
+    @Query("SELECT revised FROM gtfs_overview WHERE revised IS NOT NULL LIMIT 1")
+    fun getRevised(): String
+
     @Insert(onConflict = REPLACE)
     fun insert(lirrGtfs: LirrGtfs)
+
 
     @Query("DELETE from gtfs_overview")
     fun deleteAll()
