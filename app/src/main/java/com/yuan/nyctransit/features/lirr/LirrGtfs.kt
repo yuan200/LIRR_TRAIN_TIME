@@ -1,21 +1,37 @@
 package com.yuan.nyctransit.features.lirr
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
+import android.content.Context
+import androidx.room.*
 import com.google.gson.annotations.SerializedName
 import com.yuan.nyctransit.core.database.*
+import timber.log.Timber
 
+@Entity(tableName = "gtfs_overview")
 data class LirrGtfs(
-    @SerializedName("agency_id") var agencyId: String,
-    @SerializedName("feed_version") var feedVersion: String,
+    @PrimaryKey(autoGenerate = true) var id: Long?,
+    @ColumnInfo("agency_id") @SerializedName("agency_id") var agencyId: String,
+    @ColumnInfo("feed_version") @SerializedName("feed_version") var feedVersion: String,
     var revised: String,
-    var gtfs: Gtfs? //todo is nullable ok here
+    @Ignore var gtfs: Gtfs? //todo is nullable ok here
 ) {
+    //todo the constructor here is because it give error when it has @Ignore about
+    constructor(): this(null,"", "", "", null)
     companion object {
-        fun empty(): LirrGtfs = LirrGtfs("", "","",null)
-    }
-}
+        fun empty(): LirrGtfs = LirrGtfs(null, "", "","",null)
 
+    }
+
+
+}
+fun LirrGtfs.saveToDB(context: Context) {
+    //todo remove hardcode db name
+    //todo is this a singleton db?
+    val db = Room.databaseBuilder(context, LirrGtfsBase::class.java, "LirrGtfsTable.db").build()
+    Timber.i("saving into database")
+    db.LirrGtfsDao().insert(this)
+    val result = db.LirrGtfsDao().getAll()
+    result.toString()
+}
 data class Gtfs(
     @SerializedName("feed_info") var feedInfo: FeedInfo,
     var agency: Agency,

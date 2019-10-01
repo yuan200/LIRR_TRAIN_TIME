@@ -1,7 +1,6 @@
 package com.yuan.nyctransit.features.lirr
 
 import android.content.Context
-import android.util.Log
 import com.yuan.nyctransit.core.exception.Failure
 import com.yuan.nyctransit.core.functional.Either
 import com.yuan.nyctransit.core.platform.NetworkHandler
@@ -18,7 +17,7 @@ interface LirrGtfsRepository {
         override fun lirrGtfs(context: Context): Either<Failure, LirrGtfs> {
             Timber.d("calling lirr Gtfs...")
             return when (networkHandler.isConnected) {
-                true -> request(service.getLirrGtfs(), { Timber.i(it.toString());it},LirrGtfs.empty())
+                true -> request(service.getLirrGtfs(), {it.saveToDB(context) ;it},LirrGtfs.empty())
                 false, null -> Either.Left(Failure.ServerError)
             }
         }

@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.yuan.nyctransit.features.lirr.LirrGtfs
 
-@Database(entities = arrayOf(LirrGtfsTable::class), version = 1)
+//todo set exportSchema = true
+@Database(entities = arrayOf(LirrGtfs::class), version = 1, exportSchema = false)
 abstract class LirrGtfsBase : RoomDatabase() {
     abstract fun LirrGtfsDao(): LirrGtfsDao
 

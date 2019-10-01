@@ -5,6 +5,8 @@ import retrofit2.Call
 
 interface LirrGtfsApi {
     companion object {
+        //todo http is using clearText, i add android:usesCleartextTraffic="true"
+        // to Manifest file for right now, should find a better solution
         val link = "http://web.mta.info"
     }
 
