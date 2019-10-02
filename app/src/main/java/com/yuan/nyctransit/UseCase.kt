@@ -5,6 +5,7 @@ import com.yuan.nyctransit.core.functional.Either
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
+//todo why Type: Any
 abstract class UseCase<out Type, in Params> where Type: Any {
 
     abstract suspend fun run(params: Params): Either<Failure, Type>

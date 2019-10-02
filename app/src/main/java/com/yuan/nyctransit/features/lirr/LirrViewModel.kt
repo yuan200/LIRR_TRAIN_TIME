@@ -6,7 +6,7 @@ import com.yuan.nyctransit.core.database.LirrGtfsDao
 import kotlinx.coroutines.launch
 
 class LirrViewModel(private val lirrGtfsDao: LirrGtfsDao) : ViewModel() {
-    fun getLirrGtfsRevised = viewModelScope.launch {
+    fun getLirrGtfsRevised() = viewModelScope.launch {
         lirrGtfsDao.getRevised()
     }
 }
