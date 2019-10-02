@@ -6,6 +6,7 @@ import com.yuan.nyctransit.AndroidApplication
 import com.yuan.nyctransit.Permissions.PermissionsManager
 import com.yuan.nyctransit.core.di.ApplicationComponent
 import com.yuan.nyctransit.features.lirr.GetLirrGtfs
+import dagger.android.AndroidInjection
 import javax.inject.Inject
 
 abstract class PermissionsActivity : AppCompatActivity() {
@@ -15,13 +16,9 @@ abstract class PermissionsActivity : AppCompatActivity() {
 
     @Inject lateinit var permissionsManager: PermissionsManager
 
-    val appComponent: ApplicationComponent by lazy(mode = LazyThreadSafetyMode.NONE) {
-        (this.application as AndroidApplication).appComponent
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
+        AndroidInjection.inject(this)
         permissionsManager.attach(this)
     }
 

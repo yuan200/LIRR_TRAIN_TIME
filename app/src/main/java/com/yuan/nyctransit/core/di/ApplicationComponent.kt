@@ -10,18 +10,13 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [ApplicationModule::class, ApplicationModule::class,
+    modules = [ApplicationModule::class,
         AndroidSupportInjectionModule::class,
         PermissionsModule::class,
-        ActivityInjector::class]
+        ActivityInjector::class,
+        FragmentInjector::class]
 )
 interface ApplicationComponent {
 
     fun inject(application: AndroidApplication)
-
-    fun inject(mainActivity: MainActivity)
-
-    fun inject(activity: PermissionsActivity)
-
-    fun inject(fragment: HomeFragment)
 }
