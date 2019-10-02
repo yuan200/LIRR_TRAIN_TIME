@@ -56,8 +56,12 @@ dependencies {
     //android material
     implementation "com.google.android.material:material:${versions.material}"
 
+    //viewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.viewModelScope}"
+
     //room
     implementation "androidx.room:room-runtime:${versions.room}"
+    implementation "androidx.room:room-ktx:${versions.room}"
     kapt "androidx.room:room-compiler:${versions.room}"
 
     //coroutines

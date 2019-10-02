@@ -13,7 +13,7 @@ interface LirrGtfsDao {
     fun getAll(): List<LirrGtfs>
 
     @Query("SELECT revised FROM gtfs_overview WHERE revised IS NOT NULL LIMIT 1")
-    fun getRevised(): String
+    suspend fun getRevised(): String
 
     @Insert(onConflict = REPLACE)
     fun insert(lirrGtfs: LirrGtfs)

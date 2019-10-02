@@ -1,6 +1,8 @@
 package com.yuan.nyctransit
 
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -10,17 +12,22 @@ import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.core.di.ApplicationComponent
 import com.yuan.nyctransit.features.lirr.GetLirrGtfs
 import com.yuan.nyctransit.features.lirr.LirrGtfsRepository
+import com.yuan.nyctransit.features.lirr.LirrViewModel
 import com.yuan.nyctransit.platform.PermissionsActivity
 import dagger.android.AndroidInjection
 import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : PermissionsActivity(){
+    lateinit var model: LirrViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
+
+        model = ViewModelProviders.of(this)[LirrViewModel::class.java]
+//        model.getLirrGtfsRevised()
 
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -43,7 +50,8 @@ class MainActivity : PermissionsActivity(){
     override fun onResume() {
         super.onResume()
         val db = LirrGtfsBase.getInstance(this)
-        if (db?.LirrGtfsDao()?.getRevised().isNullOrEmpty()) lirrGtfs(true)
+        val revised = model.getLirrGtfsRevised()
+        if (revised.is) lirrGtfs(true)
     }
 
     override fun onRequestPermissionsResult(
