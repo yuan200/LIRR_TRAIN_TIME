@@ -13,6 +13,7 @@ import com.yuan.nyctransit.core.di.ApplicationComponent
 import com.yuan.nyctransit.features.lirr.GetLirrGtfs
 import com.yuan.nyctransit.features.lirr.LirrGtfsRepository
 import com.yuan.nyctransit.features.lirr.LirrViewModel
+import com.yuan.nyctransit.features.lirr.LirrViewModelFactory
 import com.yuan.nyctransit.platform.PermissionsActivity
 import dagger.android.AndroidInjection
 import timber.log.Timber
@@ -26,7 +27,7 @@ class MainActivity : PermissionsActivity(){
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        model = ViewModelProviders.of(this)[LirrViewModel::class.java]
+        model = ViewModelProviders.of(this, LirrViewModelFactory(this))[LirrViewModel::class.java]
 //        model.getLirrGtfsRevised()
 
 
@@ -50,8 +51,12 @@ class MainActivity : PermissionsActivity(){
     override fun onResume() {
         super.onResume()
         val db = LirrGtfsBase.getInstance(this)
-        val revised = model.getLirrGtfsRevised()
-        if (revised.is) lirrGtfs(true)
+//        val revised = model.getLirrGtfsRevised()
+        if (model.revised.value.isNullOrEmpty()) {
+            Timber.i("revised is null")
+            lirrGtfs(true)
+        } else
+            Timber.i("skip getRevised")
     }
 
     override fun onRequestPermissionsResult(
