@@ -52,7 +52,8 @@ class MainActivity : PermissionsActivity(){
         super.onResume()
         val db = LirrGtfsBase.getInstance(this)
 //        val revised = model.getLirrGtfsRevised()
-        if (model.revised.value.isNullOrEmpty()) {
+        val revised = model.revised
+        if (revised.value.isNullOrEmpty()) {
             Timber.i("revised is null")
             lirrGtfs(true)
         } else

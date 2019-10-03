@@ -12,17 +12,21 @@ class LirrViewModel(private val lirrGtfsDao: LirrGtfsDao) : ViewModel() {
     val revised: MutableLiveData<String> by lazy {
         MutableLiveData<String>().also {
             runBlocking {
-                val job = getLirrGtfsRevised()
-                Timber.i("before join")
-                job.join()
-                Timber.i("after join")
+                it.value = lirrGtfsDao.getRevised()
+
             }
+            Timber.i("before join")
+            Timber.i("after join")
         }
     }
 
-    fun getLirrGtfsRevised() = viewModelScope.launch {
+//    fun getLirrGtfsRevised() = viewModelScope.launch {
+//        revised.value = lirrGtfsDao.getRevised()
+//        Timber.i("revised value: ${revised.value}")
+//    }
+
+    fun getLirrGtfsRevised() = CoroutineScope(Dispatchers.Default).async {
         revised.value = lirrGtfsDao.getRevised()
         Timber.i("revised value: ${revised.value}")
     }
-
 }
