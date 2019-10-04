@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.yuan.nyctransit.ui.dashboard.MapFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/title_map"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment

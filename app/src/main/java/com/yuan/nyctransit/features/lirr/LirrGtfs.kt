@@ -26,8 +26,8 @@ data class LirrGtfs(
 fun LirrGtfs.saveToDB(context: Context) {
     val db = LirrGtfsBase.getInstance(context)
     Timber.i("saving into database")
-    db!!.LirrGtfsDao().insert(this)
-    val result = db.LirrGtfsDao().getAll()
+    db!!.lirrGtfsDao().insert(this)
+    val result = db.lirrGtfsDao().getAll()
     result.toString()
 }
 data class Gtfs(

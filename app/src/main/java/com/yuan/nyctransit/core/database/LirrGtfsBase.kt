@@ -5,11 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.yuan.nyctransit.features.lirr.LirrGtfs
+import com.yuan.nyctransit.features.lirr.StopDao
 
 //todo checkout room export schema
-@Database(entities = arrayOf(LirrGtfs::class), version = 1 )
+@Database(entities = arrayOf(LirrGtfs::class, Stop::class), version = 1 )
 abstract class LirrGtfsBase : RoomDatabase() {
-    abstract fun LirrGtfsDao(): LirrGtfsDao
+
+    abstract fun lirrGtfsDao(): LirrGtfsDao
+
+    abstract fun stopDao(): StopDao
 
     companion object {
         private var INSTANCE: LirrGtfsBase? = null

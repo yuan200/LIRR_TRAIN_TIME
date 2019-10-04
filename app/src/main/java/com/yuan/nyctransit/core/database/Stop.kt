@@ -1,13 +1,24 @@
 package com.yuan.nyctransit.core.database
 
+import android.content.Context
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "stop")
 data class Stop(
-    @SerializedName("stop_id") var stopId: String,
-    @SerializedName("stop_name") var stopName: String,
-    @SerializedName("stop_desc") var stopDesc: String,
-    @SerializedName("stop_lat") var stopLat: String,
-    @SerializedName("stop_lon") var stopLon: String,
-    @SerializedName("stop_url") var stopUrl: String,
-    @SerializedName("wheelchair_boarding") var wheelchairBoarding: Int
+    @PrimaryKey(autoGenerate = true) var id: Long?,
+    @ColumnInfo("stop_id") @SerializedName("stop_id") var stopId: String,
+    @ColumnInfo("stop_name") @SerializedName("stop_name") var stopName: String,
+    @ColumnInfo("stop_desc") @SerializedName("stop_desc") var stopDesc: String,
+    @ColumnInfo("stop_lat") @SerializedName("stop_lat") var stopLat: String,
+    @ColumnInfo("stop_lon") @SerializedName("stop_lon") var stopLon: String,
+    @ColumnInfo("stop_url") @SerializedName("stop_url") var stopUrl: String,
+    @ColumnInfo("wheelchair_boarding") @SerializedName("wheelchair_boarding") var wheelchairBoarding: Int
 )
+
+fun Stop.saveToDB(context: Context) {
+    val db = LirrGtfsBase.getInstance(context)
+    db!!.stopDao().insert(this)
+}
