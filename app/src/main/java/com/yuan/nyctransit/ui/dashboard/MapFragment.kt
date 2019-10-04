@@ -18,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yuan.nyctransit.R
+import com.yuan.nyctransit.core.database.Stop
 
 class MapFragment : Fragment() {
 
