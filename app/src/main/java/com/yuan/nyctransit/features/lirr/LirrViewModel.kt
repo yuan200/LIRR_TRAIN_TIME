@@ -1,13 +1,22 @@
 package com.yuan.nyctransit.features.lirr
 
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.yuan.nyctransit.AndroidApplication
+import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.core.database.LirrGtfsDao
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
-class LirrViewModel(private val lirrGtfsDao: LirrGtfsDao) : ViewModel() {
+class LirrViewModel(private val lirrGtfsDao: LirrGtfsDao,
+                    val application: AndroidApplication) : AndroidViewModel(application) {
+
+    private val lirrGtfsBase: LirrGtfsBase by lazy {
+        LirrGtfsBase.getInstance(application)?: throw IllegalStateException()
+    }
 
     val revised: MutableLiveData<String> by lazy {
         MutableLiveData<String>().also {
