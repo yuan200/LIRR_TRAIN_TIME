@@ -3,6 +3,7 @@ package com.yuan.nyctransit.core.di
 import android.content.Context
 import com.yuan.nyctransit.AndroidApplication
 import com.yuan.nyctransit.BuildConfig
+import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.features.lirr.*
 import dagger.Module
 import dagger.Provides
@@ -36,6 +37,8 @@ class ApplicationModule(private val application: AndroidApplication) {
             .client(createClient())
             .build()
     }
+
+    @Provides @Singleton fun provideLirrGtfsBase(lirrGtfsBase: LirrGtfsBase) = LirrGtfsBase.getInstance(application)
 
     private fun createClient(): OkHttpClient {
         val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()

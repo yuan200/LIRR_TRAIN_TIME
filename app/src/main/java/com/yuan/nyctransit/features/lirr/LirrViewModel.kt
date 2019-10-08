@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.core.database.LirrGtfsDao
+import com.yuan.nyctransit.core.database.Stop
+import com.yuan.nyctransit.utils.getDistance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -24,8 +26,33 @@ class LirrViewModel(application: Application, private val lirrGtfsDao: LirrGtfsD
                 it.value = lirrGtfsDao.getRevised()
 
             }
-            Timber.i("before join")
-            Timber.i("after join")
+        }
+    }
+
+    //todo change to private
+    val nearByStops: MutableLiveData<List<Stop>> by lazy {
+        MutableLiveData<List<Stop>>().also {
+            //todo viewModelSclpe ?
+            runBlocking {
+                val allStops = lirrGtfsBase.stopDao().allStops()
+                Timber.i("before filter size ${allStops.size}")
+                val nearbyStops = allStops.filter filter@{
+                    val distance = getDistance(
+                        it.stopLat.toDouble(),
+                        it.stopLon.toDouble(),
+                        40.744538,
+                        -73.644054
+                    )
+                    Timber.i("${it.stopDesc} distance is $distance")
+                    if (distance < 3)
+                        return@filter true
+                    return@filter false
+                }.toList()
+                Timber.i("after filter size ${nearbyStops.size}")
+                it.value = nearbyStops
+
+
+            }
         }
     }
 
@@ -34,8 +61,9 @@ class LirrViewModel(application: Application, private val lirrGtfsDao: LirrGtfsD
 //        Timber.i("revised value: ${revised.value}")
 //    }
 
+    //todo change to viewmodel scope
     fun getLirrGtfsRevised() = CoroutineScope(Dispatchers.Default).async {
         revised.value = lirrGtfsDao.getRevised()
-        Timber.i("revised value: ${revised.value}")
     }
+
 }

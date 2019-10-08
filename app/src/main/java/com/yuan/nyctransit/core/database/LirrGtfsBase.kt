@@ -8,7 +8,7 @@ import com.yuan.nyctransit.features.lirr.LirrGtfs
 import com.yuan.nyctransit.features.lirr.StopDao
 
 //todo checkout room export schema
-@Database(entities = arrayOf(LirrGtfs::class, Stop::class), version = 1 )
+@Database(entities = arrayOf(LirrGtfs::class, Stop::class), version = 2 )
 abstract class LirrGtfsBase : RoomDatabase() {
 
     abstract fun lirrGtfsDao(): LirrGtfsDao

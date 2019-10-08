@@ -1,22 +1,19 @@
 package com.yuan.nyctransit
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yuan.nyctransit.core.database.LirrGtfsBase
-import com.yuan.nyctransit.core.di.ApplicationComponent
-import com.yuan.nyctransit.features.lirr.*
+import com.yuan.nyctransit.features.lirr.LirrViewModel
+import com.yuan.nyctransit.features.lirr.LirrViewModelFactory
 import com.yuan.nyctransit.platform.PermissionsActivity
-import dagger.android.AndroidInjection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
-import javax.inject.Inject
 
 class MainActivity : PermissionsActivity(){
     lateinit var model: LirrViewModel
@@ -26,7 +23,7 @@ class MainActivity : PermissionsActivity(){
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        model = ViewModelProviders.of(this, LirrViewModelFactory(this))[LirrViewModel::class.java]
+        model = ViewModelProviders.of(this, LirrViewModelFactory(application))[LirrViewModel::class.java]
 //        model.getLirrGtfsRevised()
 
 
@@ -57,6 +54,11 @@ class MainActivity : PermissionsActivity(){
             lirrGtfs(CoroutineScope(Dispatchers.Default), true)
         } else
             Timber.i("skip getRevised")
+
+        val allStops = model.nearByStops.also {
+            Timber.i(it.value.toString())
+        }
+        if (allStops == null) Timber.i("allStops is null")
     }
 
     override fun onRequestPermissionsResult(

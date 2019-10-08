@@ -9,7 +9,7 @@ import com.yuan.nyctransit.features.lirr.LirrGtfs
 @Dao
 interface LirrGtfsDao {
 
-    @Query("SELECT * from gtfs_overview")
+    @Query("SELECT * FROM gtfs_overview")
     fun getAll(): List<LirrGtfs>
 
     @Query("SELECT revised FROM gtfs_overview WHERE revised IS NOT NULL LIMIT 1")
@@ -21,4 +21,5 @@ interface LirrGtfsDao {
 
     @Query("DELETE from gtfs_overview")
     fun deleteAll()
+
 }
