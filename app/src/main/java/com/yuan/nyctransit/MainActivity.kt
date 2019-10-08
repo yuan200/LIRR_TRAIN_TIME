@@ -10,12 +10,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.core.di.ApplicationComponent
-import com.yuan.nyctransit.features.lirr.GetLirrGtfs
-import com.yuan.nyctransit.features.lirr.LirrGtfsRepository
-import com.yuan.nyctransit.features.lirr.LirrViewModel
-import com.yuan.nyctransit.features.lirr.LirrViewModelFactory
+import com.yuan.nyctransit.features.lirr.*
 import com.yuan.nyctransit.platform.PermissionsActivity
 import dagger.android.AndroidInjection
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -55,7 +54,7 @@ class MainActivity : PermissionsActivity(){
         val revised = model.revised
         if (revised.value.isNullOrEmpty()) {
             Timber.i("revised is null")
-            lirrGtfs(true)
+            lirrGtfs(CoroutineScope(Dispatchers.Default), true)
         } else
             Timber.i("skip getRevised")
     }

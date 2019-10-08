@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.core.platform.BaseFragment
 import com.yuan.nyctransit.features.lirr.GetLirrFeed
-import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment() {
@@ -44,6 +44,6 @@ class HomeFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        lirrFedd(true)
+        lirrFedd(CoroutineScope(Dispatchers.Default), true)
     }
 }

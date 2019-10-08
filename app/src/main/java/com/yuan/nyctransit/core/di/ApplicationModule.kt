@@ -3,10 +3,7 @@ package com.yuan.nyctransit.core.di
 import android.content.Context
 import com.yuan.nyctransit.AndroidApplication
 import com.yuan.nyctransit.BuildConfig
-import com.yuan.nyctransit.features.lirr.LirrFeedRepository
-import com.yuan.nyctransit.features.lirr.LirrGtfs
-import com.yuan.nyctransit.features.lirr.LirrGtfsApi
-import com.yuan.nyctransit.features.lirr.LirrGtfsRepository
+import com.yuan.nyctransit.features.lirr.*
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -20,7 +17,7 @@ class ApplicationModule(private val application: AndroidApplication) {
 
     @Provides @Singleton fun provideApplicationContext(): Context = application
 
-    @Provides @Singleton fun provideLirrRepository(dataSource: LirrFeedRepository.Network): LirrFeedRepository = dataSource
+    @Provides @Singleton fun provideLirrRepository(dataSource: NetworkLirrRepository): LirrFeedRepository = dataSource
 
     @Provides @Named("apiMta") @Singleton fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
@@ -29,7 +26,7 @@ class ApplicationModule(private val application: AndroidApplication) {
             .build()
     }
 
-    @Provides @Singleton fun provideLirrGtfsRepository(dataSource: LirrGtfsRepository.Network)
+    @Provides @Singleton fun provideLirrGtfsRepository(dataSource: LirrGtfsNetworkRepository)
     : LirrGtfsRepository = dataSource
 
     @Provides @Named("webMta") @Singleton fun provideLirrGtfsRetrofit(): Retrofit {

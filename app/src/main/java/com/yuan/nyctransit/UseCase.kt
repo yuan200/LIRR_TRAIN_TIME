@@ -15,8 +15,8 @@ abstract class UseCase<out Type, in Params> where Type: Any {
      * val job = async(CommonPool) { run(params) }
      * launch(UI) { onResult(job.await()) }
      */
-    operator fun invoke(params: Params, onResult: (Either<Failure, Type>) -> Unit = {}) {
-        val job = CoroutineScope(Dispatchers.Default).async { run(params) }
+    operator fun invoke(scope: CoroutineScope params: Params, onResult: (Either<Failure, Type>) -> Unit = {}) {
+        val job = scope.async { run(params) }
         CoroutineScope(Dispatchers.Main).launch { onResult(job.await()) }
     }
 
