@@ -28,6 +28,12 @@ class LirrGtfsNetworkRepository
                 it.gtfs!!.stops.forEach {
                     it.saveToDB(context)
                 }
+                it.gtfs!!.stopTimes.forEach {
+                    it.saveToDB(context)
+                }
+                it.gtfs!!.trips.forEach {
+                    it.saveToDB(context)
+                }
                 it}, LirrGtfs.empty())
             false, null -> Either.Left(Failure.ServerError)
         }

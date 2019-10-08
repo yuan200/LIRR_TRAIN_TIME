@@ -6,14 +6,27 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.yuan.nyctransit.features.lirr.LirrGtfs
 import com.yuan.nyctransit.features.lirr.StopDao
+import com.yuan.nyctransit.features.lirr.StopTimeDao
+import com.yuan.nyctransit.features.lirr.TripDao
 
 //todo checkout room export schema
-@Database(entities = arrayOf(LirrGtfs::class, Stop::class), version = 2 )
+@Database(
+    entities = arrayOf(
+        LirrGtfs::class,
+        Stop::class,
+        Trip::class,
+        StopTime::class
+    ), version = 2
+)
 abstract class LirrGtfsBase : RoomDatabase() {
 
     abstract fun lirrGtfsDao(): LirrGtfsDao
 
     abstract fun stopDao(): StopDao
+
+    abstract fun tripDao(): TripDao
+
+    abstract fun stopTimeDao(): StopTimeDao
 
     companion object {
         private var INSTANCE: LirrGtfsBase? = null
@@ -26,7 +39,8 @@ abstract class LirrGtfsBase : RoomDatabase() {
                         INSTANCE = Room.databaseBuilder(
                             context.applicationContext,
                             LirrGtfsBase::class.java,
-                            "LirrGtfsTable.db")
+                            "LirrGtfsTable.db"
+                        )
                             .build()
                     }
                 }

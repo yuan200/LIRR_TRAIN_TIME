@@ -1,7 +1,6 @@
 package com.yuan.nyctransit.extenstion
 
 import android.content.Context
-import android.util.Log
 import com.google.transit.realtime.GtfsRealtime
 import okhttp3.ResponseBody
 import timber.log.Timber

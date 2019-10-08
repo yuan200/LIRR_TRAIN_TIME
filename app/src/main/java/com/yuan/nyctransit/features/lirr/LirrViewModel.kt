@@ -41,7 +41,7 @@ class LirrViewModel(application: Application, private val lirrGtfsDao: LirrGtfsD
                 val allStops = lirrGtfsBase.stopDao().allStops()
                 Timber.i("before filter size ${allStops.size}")
                 val stopDistanceMap = HashMap<Stop, Double>().also { h ->
-                    allStops.forEach() {
+                    allStops.forEach {
                         val distance = getDistance(
                             it.stopLat.toDouble(),
                             it.stopLon.toDouble(),
@@ -58,7 +58,11 @@ class LirrViewModel(application: Application, private val lirrGtfsDao: LirrGtfsD
                 val sortStops = stopDistanceMap.toList().sortedBy {
                     (_, value) -> value
                 }
-                it.value = sortStops[0].first
+                //todo this is ugly might have bugs
+                if (sortStops.isEmpty())
+                    it.value = Stop.empty()
+                else
+                    it.value = sortStops[0].first
             }
         }
     }

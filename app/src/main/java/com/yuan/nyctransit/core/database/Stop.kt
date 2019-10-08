@@ -16,7 +16,11 @@ data class Stop(
     @ColumnInfo("stop_lon") @SerializedName("stop_lon") var stopLon: String,
     @ColumnInfo("stop_url") @SerializedName("stop_url") var stopUrl: String,
     @ColumnInfo("wheelchair_boarding") @SerializedName("wheelchair_boarding") var wheelchairBoarding: Int
-)
+) {
+    companion object {
+        fun empty():Stop = Stop(0,"","","","","","",0)
+    }
+}
 
 fun Stop.saveToDB(context: Context) {
     val db = LirrGtfsBase.getInstance(context)

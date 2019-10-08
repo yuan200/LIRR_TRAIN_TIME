@@ -50,10 +50,8 @@ class MainActivity : PermissionsActivity(){
 //        val revised = model.getLirrGtfsRevised()
         val revised = model.revised
         if (revised.value.isNullOrEmpty()) {
-            Timber.i("revised is null")
             lirrGtfs(CoroutineScope(Dispatchers.Default), true)
-        } else
-            Timber.i("skip getRevised")
+        }
 
         val allStops = model.nearByStops.also {
             Timber.i(it.value.toString())

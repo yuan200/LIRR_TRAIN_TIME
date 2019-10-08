@@ -1,12 +1,21 @@
 package com.yuan.nyctransit.core.database
 
+import android.content.Context
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "trip")
 data class Trip(
-    @SerializedName("route_id") var routeId: String,
-    @SerializedName("service_id") var serviceId: String,
-    @SerializedName("trip_headsign") var tripHeadsign: String,
-    @SerializedName("trip_short_name") var tripShortName: String,
-    @SerializedName("direction_id") var directionId: String,
-    @SerializedName("shape_id") var shapeId: String
+    @PrimaryKey(autoGenerate = true) var id: Long?,
+    @ColumnInfo("route_id") @SerializedName("route_id") var routeId: String,
+    @ColumnInfo("service_id") @SerializedName("service_id") var serviceId: String,
+    @ColumnInfo("trip_id") @SerializedName("trip_id") var tripId: String,
+    @ColumnInfo("trip_headsign") @SerializedName("trip_headsign") var tripHeadsign: String,
+    @ColumnInfo("trip_short_name") @SerializedName("trip_short_name") var tripShortName: String,
+    @ColumnInfo("direction_id") @SerializedName("direction_id") var directionId: String,
+    @ColumnInfo("shape_id") @SerializedName("shape_id") var shapeId: String
 )
+
+fun Trip.saveToDB(context: Context) = LirrGtfsBase.getInstance(context)!!.tripDao().insert(this)
