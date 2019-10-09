@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -18,7 +18,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yuan.nyctransit.R
-import com.yuan.nyctransit.core.database.Stop
+import com.yuan.nyctransit.core.database.StopTime
+import com.yuan.nyctransit.features.lirr.ScheduleAdapter
 
 class MapFragment : Fragment() {
 
@@ -30,6 +31,12 @@ class MapFragment : Fragment() {
 
     private lateinit var currentLocation: Location
 
+    private lateinit var recyclerView: RecyclerView
+
+    private lateinit var viewAdapter: ScheduleAdapter
+
+    private lateinit var viewManager: RecyclerView.LayoutManager
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +44,7 @@ class MapFragment : Fragment() {
     ): View? {
         dashboardViewModel =
             ViewModelProviders.of(this).get(DashboardViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
+        val root = inflater.inflate(R.layout.fragment_map, container, false)
         val supportMapFragment = childFragmentManager.findFragmentById(R.id.map_fragment)
                 as SupportMapFragment
         supportMapFragment.getMapAsync(OnMapReadyCallback {
@@ -45,6 +52,27 @@ class MapFragment : Fragment() {
 
 
         })
+
+        viewManager = LinearLayoutManager(context)
+        val testList = listOf<StopTime>(
+            StopTime(0,"3","arrival time", "", "stop id, ",0),
+            StopTime(0,"3","arrival time", "", "stop id, ",0),
+            StopTime(0,"3","arrival time", "", "stop id, ",0),
+            StopTime(0,"3","arrival time", "", "stop id, ",0),
+            StopTime(0,"3","arrival time", "", "stop id, ",0),
+            StopTime(0,"3","arrival time", "", "stop id, ",0),
+            StopTime(0,"3","arrival time", "", "stop id, ",0),
+            StopTime(0,"3","arrival time", "", "stop id, ",0),
+            StopTime(0,"3","arrival time", "", "stop id, ",0),
+            StopTime(0,"3","arrival time", "", "stop id, ",0)
+        )
+        viewAdapter = ScheduleAdapter(testList)
+
+        recyclerView = root.findViewById<RecyclerView>(R.id.schedule_recycler_view).apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
         return root
     }
 
