@@ -2,6 +2,7 @@ package com.yuan.nyctransit.extenstion
 
 import android.content.Context
 import com.google.transit.realtime.GtfsRealtime
+import com.yuan.nyctransit.features.lirr.LirrFeed
 import okhttp3.ResponseBody
 import timber.log.Timber
 import java.io.*
@@ -27,6 +28,7 @@ fun ResponseBody.writeResponseBodyToDisk( context: Context): Boolean {
             while (true) {
 
                 val feed: GtfsRealtime.FeedMessage = GtfsRealtime.FeedMessage.parseFrom(inputStream)
+                LirrFeed.entityList = feed.entityList
 
                 for (item in feed.entityList) {
                     if (item.hasTripUpdate()) {
