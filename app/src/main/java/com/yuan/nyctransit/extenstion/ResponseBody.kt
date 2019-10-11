@@ -8,7 +8,7 @@ import timber.log.Timber
 import java.io.*
 
 
-fun ResponseBody.writeResponseBodyToDisk( context: Context): Boolean {
+fun ResponseBody.writeResponseBodyToDisk(context: Context, stopId: String): Boolean {
     try {
         val filename = "lirrFeeder"
         val file = File(context.filesDir, filename)

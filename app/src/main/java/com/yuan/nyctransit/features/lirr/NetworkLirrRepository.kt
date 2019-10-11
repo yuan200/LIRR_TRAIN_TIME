@@ -16,10 +16,10 @@ class NetworkLirrRepository
                     private val service: LirrService
 ) : LirrFeedRepository {
 
-    override fun lirrFeed(context: Context): Either<Failure, Boolean> {
+    override fun lirrFeed(context: Context, stopId: String): Either<Failure, Boolean> {
         Timber.d("calling lirrFeed...")
         return when (networkHandler.isConnected) {
-            true -> request(service.lirrFeed(), { it.writeResponseBodyToDisk(context)},
+            true -> request(service.lirrFeed(), { it.writeResponseBodyToDisk(context, stopId)},
                 ResponseBody.create(
                     MediaType.parse("Jason"), toString()
                 )
