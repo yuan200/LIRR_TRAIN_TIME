@@ -19,7 +19,7 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var homeViewModel: HomeViewModel
 
-    @Inject lateinit var lirrFedd: GetLirrFeed
+    @Inject lateinit var lirrFeed: GetLirrFeed
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +44,7 @@ class HomeFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        lirrFedd(CoroutineScope(Dispatchers.Default), true)
+        lirrFeed.stopId = "132"
+        lirrFeed(CoroutineScope(Dispatchers.Default), true)
     }
 }

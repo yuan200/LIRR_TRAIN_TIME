@@ -30,6 +30,12 @@ fun ResponseBody.writeResponseBodyToDisk(context: Context, stopId: String): Bool
                 val feed: GtfsRealtime.FeedMessage = GtfsRealtime.FeedMessage.parseFrom(inputStream)
                 LirrFeed.entityList = feed.entityList
 
+
+                for (entity in LirrFeed.entityList) {
+                    for (stopTimeUpdate in entity.tripUpdate.stopTimeUpdateList) {
+                        if (stopId == stopTimeUpdate.stopId) LirrFeed.stopTimeUpdateList.add(stopTimeUpdate)
+                    }
+                }
                 for (item in feed.entityList) {
                     if (item.hasTripUpdate()) {
                         Timber.d(item.tripUpdate.toString())
