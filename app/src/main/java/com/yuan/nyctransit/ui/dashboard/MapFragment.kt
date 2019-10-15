@@ -18,7 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yuan.nyctransit.R
-import com.yuan.nyctransit.core.database.StopTime
+import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
 
 class MapFragment : Fragment() {
@@ -54,19 +54,21 @@ class MapFragment : Fragment() {
         })
 
         viewManager = LinearLayoutManager(context)
-        val testList = listOf<StopTime>(
-            StopTime(0,"3","arrival time", "", "stop id, ",0),
-            StopTime(0,"3","arrival time", "", "stop id, ",0),
-            StopTime(0,"3","arrival time", "", "stop id, ",0),
-            StopTime(0,"3","arrival time", "", "stop id, ",0),
-            StopTime(0,"3","arrival time", "", "stop id, ",0),
-            StopTime(0,"3","arrival time", "", "stop id, ",0),
-            StopTime(0,"3","arrival time", "", "stop id, ",0),
-            StopTime(0,"3","arrival time", "", "stop id, ",0),
-            StopTime(0,"3","arrival time", "", "stop id, ",0),
-            StopTime(0,"3","arrival time", "", "stop id, ",0)
-        )
-        viewAdapter = ScheduleAdapter(testList)
+//        val testList = mutableListOf<GtfsRealtime.TripUpdate.StopTimeUpdate>(
+//            StopTime(0,"3","arrival time", "", "stop id, ",0),
+//            StopTime(0,"3","arrival time", "", "stop id, ",0),
+//            StopTime(0,"3","arrival time", "", "stop id, ",0),
+//            StopTime(0,"3","arrival time", "", "stop id, ",0),
+//            StopTime(0,"3","arrival time", "", "stop id, ",0),
+//            StopTime(0,"3","arrival time", "", "stop id, ",0),
+//            StopTime(0,"3","arrival time", "", "stop id, ",0),
+//            StopTime(0,"3","arrival time", "", "stop id, ",0),
+//            StopTime(0,"3","arrival time", "", "stop id, ",0),
+//            StopTime(0,"3","arrival time", "", "stop id, ",0)
+//        )
+
+        val adapterList = LirrFeed.stopTimeUpdateList
+        viewAdapter = ScheduleAdapter(adapterList)
 
         recyclerView = root.findViewById<RecyclerView>(R.id.schedule_recycler_view).apply {
             setHasFixedSize(true)
