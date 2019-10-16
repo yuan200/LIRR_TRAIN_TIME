@@ -9,21 +9,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.core.platform.BaseFragment
-import com.yuan.nyctransit.features.lirr.GetLirrFeed
-import dagger.android.support.AndroidSupportInjection
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
 
 class HomeFragment : BaseFragment() {
 
     private lateinit var homeViewModel: HomeViewModel
 
-    @Inject lateinit var lirrFeed: GetLirrFeed
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidSupportInjection.inject(this)
     }
 
     override fun onCreateView(
@@ -43,8 +35,5 @@ class HomeFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-
-        lirrFeed.stopId = "132"
-        lirrFeed(CoroutineScope(Dispatchers.Default), true)
     }
 }

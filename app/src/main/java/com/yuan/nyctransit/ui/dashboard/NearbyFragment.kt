@@ -18,12 +18,17 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yuan.nyctransit.R
+import com.yuan.nyctransit.features.lirr.GetLirrFeed
 import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
+import dagger.android.support.AndroidSupportInjection
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class MapFragment : Fragment() {
+class NearbyFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var nearbyViewModel: NearbyViewModel
 
     private lateinit var mMap: GoogleMap
 
@@ -37,13 +42,16 @@ class MapFragment : Fragment() {
 
     private lateinit var viewManager: RecyclerView.LayoutManager
 
+    @Inject lateinit var lirrFeed: GetLirrFeed
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProviders.of(this).get(DashboardViewModel::class.java)
+        AndroidSupportInjection.inject(this)
+        nearbyViewModel =
+            ViewModelProviders.of(this).get(NearbyViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_map, container, false)
         val supportMapFragment = childFragmentManager.findFragmentById(R.id.map_fragment)
                 as SupportMapFragment
@@ -54,18 +62,6 @@ class MapFragment : Fragment() {
         })
 
         viewManager = LinearLayoutManager(context)
-//        val testList = mutableListOf<GtfsRealtime.TripUpdate.StopTimeUpdate>(
-//            StopTime(0,"3","arrival time", "", "stop id, ",0),
-//            StopTime(0,"3","arrival time", "", "stop id, ",0),
-//            StopTime(0,"3","arrival time", "", "stop id, ",0),
-//            StopTime(0,"3","arrival time", "", "stop id, ",0),
-//            StopTime(0,"3","arrival time", "", "stop id, ",0),
-//            StopTime(0,"3","arrival time", "", "stop id, ",0),
-//            StopTime(0,"3","arrival time", "", "stop id, ",0),
-//            StopTime(0,"3","arrival time", "", "stop id, ",0),
-//            StopTime(0,"3","arrival time", "", "stop id, ",0),
-//            StopTime(0,"3","arrival time", "", "stop id, ",0)
-//        )
 
         val adapterList = LirrFeed.stopTimeUpdateList
         viewAdapter = ScheduleAdapter(adapterList)
@@ -80,6 +76,10 @@ class MapFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        //todo hardcode
+        lirrFeed.stopId = "132"
+        lirrFeed(CoroutineScope(Dispatchers.Default), true)
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!).apply {
             lastLocation.addOnSuccessListener {
                 currentLocation = it ?: Location("empty").apply {
