@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.transit.realtime.GtfsRealtime
 import com.yuan.nyctransit.features.lirr.GetLirrFeed
+import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class NearbyViewModel
     val text: LiveData<String> = _text
 
     private val _feed =
-        MutableLiveData<MutableList<GtfsRealtime.TripUpdate.StopTimeUpdate>>().apply {
+        MutableLiveData<MutableList<StopTimeUpdateView>>().apply {
             //todo hardcode
             lirrFeed.stopId = "132"
             //todo viewmodeScope is use main thread, how to avoid useing CoroutineScope(Dispatchers.IO)
@@ -29,7 +29,7 @@ class NearbyViewModel
                 if (it.isRight) value =
                     it.either(
                         {},
-                        { stopTimeUpdateList -> stopTimeUpdateList }) as MutableList<GtfsRealtime.TripUpdate.StopTimeUpdate>
+                        { stopTimeUpdateViewList -> stopTimeUpdateViewList }) as MutableList<StopTimeUpdateView>
             }
         }
 

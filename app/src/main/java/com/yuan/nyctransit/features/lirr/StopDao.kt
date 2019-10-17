@@ -17,4 +17,7 @@ interface StopDao {
 
     @Query("SELECT * FROM stop")
     suspend fun allStops(): List<Stop>
+
+    @Query("SELECT * FROM STOP WHERE STOP_ID = :stopId")
+    suspend fun getStop(stopId: String): Stop
 }

@@ -13,5 +13,5 @@ interface TripDao {
     fun insert(trip: Trip)
 
     @Query("SELECT * FROM trip WHERE trip_id = :tripId")
-    fun getByTripId(tripId: String): Trip
+    suspend fun getByTripId(tripId: String): Trip
 }

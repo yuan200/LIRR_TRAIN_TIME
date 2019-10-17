@@ -1,7 +1,6 @@
 package com.yuan.nyctransit.features.lirr
 
 import android.content.Context
-import com.google.transit.realtime.GtfsRealtime
 import com.yuan.nyctransit.core.exception.Failure
 import com.yuan.nyctransit.core.functional.Either
 import com.yuan.nyctransit.core.platform.NetworkHandler
@@ -21,7 +20,7 @@ class NetworkLirrRepository
     override fun lirrFeed(
         context: Context,
         stopId: String
-    ): Either<Failure, MutableList<GtfsRealtime.TripUpdate.StopTimeUpdate>> {
+    ): Either<Failure, MutableList<StopTimeUpdateView>> {
         Timber.d("calling lirrFeed...")
         return when (networkHandler.isConnected) {
             true -> request(

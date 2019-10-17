@@ -69,7 +69,7 @@ class NearbyFragment : Fragment() {
 
         viewManager = LinearLayoutManager(context)
 
-        val adapterList = LirrFeed.stopTimeUpdateList
+        val adapterList = LirrFeed.stopTimeUpdateViewList
         viewAdapter = ScheduleAdapter()
 
         recyclerView = root.findViewById<RecyclerView>(R.id.schedule_recycler_view).apply {

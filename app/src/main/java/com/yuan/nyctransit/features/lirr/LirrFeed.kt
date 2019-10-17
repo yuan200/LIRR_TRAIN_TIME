@@ -7,6 +7,8 @@ object LirrFeed {
 
     var stopTimeUpdateList  = mutableListOf<GtfsRealtime.TripUpdate.StopTimeUpdate>()
 
+    var stopTimeUpdateViewList = mutableListOf<StopTimeUpdateView>()
+
     fun getvoid() {
 
     }
