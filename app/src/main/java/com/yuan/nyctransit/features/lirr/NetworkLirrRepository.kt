@@ -1,6 +1,7 @@
 package com.yuan.nyctransit.features.lirr
 
 import android.content.Context
+import com.google.transit.realtime.GtfsRealtime
 import com.yuan.nyctransit.core.exception.Failure
 import com.yuan.nyctransit.core.functional.Either
 import com.yuan.nyctransit.core.platform.NetworkHandler
@@ -12,14 +13,19 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class NetworkLirrRepository
-@Inject constructor(private val networkHandler: NetworkHandler,
-                    private val service: LirrService
+@Inject constructor(
+    private val networkHandler: NetworkHandler,
+    private val service: LirrService
 ) : LirrFeedRepository {
 
-    override fun lirrFeed(context: Context, stopId: String): Either<Failure, Boolean> {
+    override fun lirrFeed(
+        context: Context,
+        stopId: String
+    ): Either<Failure, MutableList<GtfsRealtime.TripUpdate.StopTimeUpdate>> {
         Timber.d("calling lirrFeed...")
         return when (networkHandler.isConnected) {
-            true -> request(service.lirrFeed(), { it.writeResponseBodyToDisk(context, stopId)},
+            true -> request(
+                service.lirrFeed(), { it.writeResponseBodyToDisk(context, stopId) },
                 ResponseBody.create(
                     MediaType.parse("Jason"), toString()
                 )

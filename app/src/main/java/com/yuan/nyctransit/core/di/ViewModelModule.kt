@@ -11,10 +11,11 @@ import dagger.multibindings.IntoMap
 abstract class ViewModelModule {
 
     @Binds
-    internal abstract fun bindViewModelFactory(factory: NearbyViewModelFactory): ViewModelProvider.AndroidViewModelFactory
+    internal abstract fun bindViewModelFactory(factory: NearbyViewModelFactory):
+            ViewModelProvider.AndroidViewModelFactory
 
     @Binds
     @IntoMap
     @ViewModelKey(NearbyViewModel::class)
-    internal  abstract fun nearbyViewModel(viewModel: NearbyViewModel): AndroidViewModel
+    internal abstract fun nearbyViewModel(viewModel: NearbyViewModel): AndroidViewModel
 }

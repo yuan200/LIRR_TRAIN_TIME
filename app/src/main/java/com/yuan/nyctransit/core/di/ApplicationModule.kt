@@ -1,5 +1,6 @@
 package com.yuan.nyctransit.core.di
 
+import android.app.Application
 import android.content.Context
 import com.yuan.nyctransit.AndroidApplication
 import com.yuan.nyctransit.BuildConfig
@@ -17,6 +18,9 @@ import javax.inject.Singleton
 class ApplicationModule(private val application: AndroidApplication) {
 
     @Provides @Singleton fun provideApplicationContext(): Context = application
+
+    //todo this is duplicate with application context provide method
+    @Provides @Singleton fun provideApplication(): Application = application
 
     @Provides @Singleton fun provideLirrRepository(dataSource: NetworkLirrRepository): LirrFeedRepository = dataSource
 

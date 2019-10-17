@@ -8,7 +8,10 @@ import timber.log.Timber
 import java.io.*
 
 
-fun ResponseBody.writeResponseBodyToDisk(context: Context, stopId: String): Boolean {
+fun ResponseBody.writeResponseBodyToDisk(
+    context: Context,
+    stopId: String
+): MutableList<GtfsRealtime.TripUpdate.StopTimeUpdate> {
     try {
         val filename = "lirrFeeder"
         val file = File(context.filesDir, filename)
@@ -33,7 +36,9 @@ fun ResponseBody.writeResponseBodyToDisk(context: Context, stopId: String): Bool
 
                 for (entity in LirrFeed.entityList) {
                     for (stopTimeUpdate in entity.tripUpdate.stopTimeUpdateList) {
-                        if (stopId == stopTimeUpdate.stopId) LirrFeed.stopTimeUpdateList.add(stopTimeUpdate)
+                        if (stopId == stopTimeUpdate.stopId) LirrFeed.stopTimeUpdateList.add(
+                            stopTimeUpdate
+                        )
                     }
                 }
                 for (item in feed.entityList) {
@@ -52,16 +57,16 @@ fun ResponseBody.writeResponseBodyToDisk(context: Context, stopId: String): Bool
                 Timber.d("file downlaed: $fileSizeDownload of $fileSize")
             }
             outputStream.flush()
-            return true
+            return LirrFeed.stopTimeUpdateList
 
         } catch (e: IOException) {
-            return false
-        }  finally {
+            return mutableListOf<GtfsRealtime.TripUpdate.StopTimeUpdate>()
+        } finally {
             inputStream ?: inputStream!!.close()
             outputStream ?: outputStream!!.close()
         }
 
     } catch (ex: IOException) {
-        return false
+        return mutableListOf<GtfsRealtime.TripUpdate.StopTimeUpdate>()
     }
 }
