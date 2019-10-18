@@ -48,6 +48,8 @@ class MainActivity : PermissionsActivity(){
         super.onResume()
         val db = LirrGtfsBase.getInstance(this)
 //        val revised = model.getLirrGtfsRevised()
+        //todo need to download this data in background after a certain of time
+        //todo need to show loading when downloading data first time
         val revised = model.revised
         if (revised.value.isNullOrEmpty()) {
             lirrGtfs(CoroutineScope(Dispatchers.Default), true)
