@@ -14,10 +14,9 @@ class ScheduleView: ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    lateinit var trainNameTV: TextView
-    lateinit var trainTimeTV: TextView
-
-
+    var trainNameTV: TextView
+    var scheduleTime: TextView
+    var trainTimeTV: TextView
 
     init {
 
@@ -34,6 +33,12 @@ class ScheduleView: ConstraintLayout {
             id = generateViewId()
         }
         addView(trainNameTV)
+
+        scheduleTime = TextView(context).apply {
+            id = View.generateViewId()
+        }
+        addView(scheduleTime)
+
         trainTimeTV = TextView(context).apply {
             id = generateViewId()
         }
@@ -46,6 +51,7 @@ class ScheduleView: ConstraintLayout {
 //        set.createHorizontalChain(ConstraintSet.PARENT_ID, ConstraintSet.LEFT,ConstraintSet.PARENT_ID, ConstraintSet.RIGHT,
 //            intArrayOf(trainNameTV.id, trainTimeTV.id), null, ConstraintSet.CHAIN_SPREAD)
         set.connect(trainTimeTV.id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 30)
+        set.connect(scheduleTime.id, ConstraintSet.TOP, trainNameTV.id, ConstraintSet.BOTTOM, 10)
         set.applyTo(this)
 
     }

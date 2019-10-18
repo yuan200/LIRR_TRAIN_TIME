@@ -69,12 +69,13 @@ fun ResponseBody.writeResponseBodyToDisk(
                                 val arrivalTime = stopTimeJob.await()
                                 //todo call require api 26
 //                                val localTime = LocalTime.parse(arrivalTime, DateTimeFormatter.ofLocalizedTime( FormatStyle.SHORT))
-                                val localTime = LocalTime.parse(arrivalTime, DateTimeFormatter.ISO_LOCAL_TIME)
+                                val localTime =
+                                    LocalTime.parse(arrivalTime, DateTimeFormatter.ISO_LOCAL_TIME)
                                 Timber.i(localTime.toString())
 
                                 val stopTimeUpdateView = StopTimeUpdateView(
                                     stopName, "",
-                                    "", stopTimeUpdate.arrival.delay, tripHeadSign
+                                    "", arrivalTime, stopTimeUpdate.arrival.delay, tripHeadSign
                                 )
                                 stopTimeUpdateViewList.add(stopTimeUpdateView)
                             }
