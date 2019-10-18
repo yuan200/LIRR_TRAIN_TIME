@@ -51,9 +51,10 @@ class MainActivity : PermissionsActivity(){
         //todo need to download this data in background after a certain of time
         //todo need to show loading when downloading data first time
         val revised = model.revised
-        if (revised.value.isNullOrEmpty()) {
-            lirrGtfs(CoroutineScope(Dispatchers.Default), true)
-        }
+//        if (revised.value.isNullOrEmpty()) {
+//            lirrGtfs(CoroutineScope(Dispatchers.Default), true)
+//        }
+        lirrGtfs(CoroutineScope(Dispatchers.Default), true)
 
         val allStops = model.nearByStops.also {
             Timber.i(it.value.toString())
