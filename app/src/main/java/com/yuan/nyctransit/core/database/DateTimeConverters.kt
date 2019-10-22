@@ -6,20 +6,21 @@ import java.util.*
 
 class DateTimeConverters {
 
-    val pattern = "yyyy-MM-dd'T'HH:mm:ssZ"
+    val dateTimePattern = "yyyy-MM-dd'T'HH:mm:ssZ"
+
 
     @TypeConverter
     fun fromStringToDataTime(str: String): Date {
-        //todo requires api 26(current 24)
-        val simpleDateFormat = SimpleDateFormat(pattern)
+        val simpleDateFormat = SimpleDateFormat(dateTimePattern)
         return simpleDateFormat.parse(str)
 
     }
 
     @TypeConverter
     fun fromDateTimeToString(date: Date): String {
-        //todo requires api 26(current 24)
-        val simpleDateFormat = SimpleDateFormat(pattern)
+        val simpleDateFormat = SimpleDateFormat(dateTimePattern)
         return simpleDateFormat.format(date)
     }
+
+
 }
