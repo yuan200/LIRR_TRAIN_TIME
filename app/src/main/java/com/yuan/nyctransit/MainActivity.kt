@@ -11,8 +11,6 @@ import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.features.lirr.LirrViewModel
 import com.yuan.nyctransit.features.lirr.LirrViewModelFactory
 import com.yuan.nyctransit.platform.PermissionsActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
 class MainActivity : PermissionsActivity(){
@@ -24,7 +22,6 @@ class MainActivity : PermissionsActivity(){
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         model = ViewModelProviders.of(this, LirrViewModelFactory(application))[LirrViewModel::class.java]
-//        model.getLirrGtfsRevised()
 
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -54,12 +51,10 @@ class MainActivity : PermissionsActivity(){
 //        if (revised.value.isNullOrEmpty()) {
 //            lirrGtfs(CoroutineScope(Dispatchers.Default), true)
 //        }
-        lirrGtfs(CoroutineScope(Dispatchers.Default), true)
 
         val allStops = model.nearByStops.also {
             Timber.i(it.value.toString())
         }
-        if (allStops == null) Timber.i("allStops is null")
     }
 
     override fun onRequestPermissionsResult(

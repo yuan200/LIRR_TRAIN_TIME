@@ -1,5 +1,6 @@
 package com.yuan.nyctransit.core.di
 
+import com.yuan.nyctransit.LoadingActivity
 import com.yuan.nyctransit.MainActivity
 import com.yuan.nyctransit.platform.PermissionsActivity
 import dagger.Module
@@ -13,4 +14,7 @@ abstract class ActivityInjector {
 
     @ContributesAndroidInjector
     abstract fun contributePermissionsActivity(): PermissionsActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeLoadingActivity(): LoadingActivity
 }

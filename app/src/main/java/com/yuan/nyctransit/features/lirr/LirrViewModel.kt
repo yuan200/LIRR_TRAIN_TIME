@@ -12,6 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import java.util.*
+import kotlin.collections.HashMap
 
 class LirrViewModel(application: Application, private val lirrGtfsDao: LirrGtfsDao) :
     AndroidViewModel(application) {
@@ -20,8 +22,8 @@ class LirrViewModel(application: Application, private val lirrGtfsDao: LirrGtfsD
         LirrGtfsBase.getInstance(application) ?: throw IllegalStateException()
     }
 
-    val revised: MutableLiveData<String> by lazy {
-        MutableLiveData<String>().also {
+    val revised: MutableLiveData<Date> by lazy {
+        MutableLiveData<Date>().also {
             //todo runBlocking probably is not a good idea
             runBlocking {
                 it.value = lirrGtfsDao.getRevised()

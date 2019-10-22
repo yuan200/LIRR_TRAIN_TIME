@@ -5,19 +5,19 @@ import androidx.room.*
 import com.google.gson.annotations.SerializedName
 import com.yuan.nyctransit.core.database.*
 import timber.log.Timber
+import java.util.*
 
 @Entity(tableName = "gtfs_overview")
 data class LirrGtfs(
-    @PrimaryKey(autoGenerate = true) var id: Long?,
     @ColumnInfo("agency_id") @SerializedName("agency_id") var agencyId: String,
     @ColumnInfo("feed_version") @SerializedName("feed_version") var feedVersion: String,
-    var revised: String,
+    @PrimaryKey var revised: Date,
     @Ignore var gtfs: Gtfs? //todo is nullable ok here
 ) {
     //todo the constructor here is because it give error when it has @Ignore about
-    constructor(): this(null,"", "", "", null)
+    constructor(): this("", "", Date(), null)
     companion object {
-        fun empty(): LirrGtfs = LirrGtfs(null, "", "","",null)
+        fun empty(): LirrGtfs = LirrGtfs("", "",Date(),null)
 
     }
 
@@ -38,5 +38,5 @@ data class Gtfs(
     var shapes: List<Shape>,
     var trips: List<Trip>,
     @SerializedName("stop_times") var stopTimes: List<StopTime>,
-    @SerializedName("calendar_dates") var calendarDates: List<Calendardate>
+    @SerializedName("calendar_dates") var calendarDates: List<CalendarDate>
 )

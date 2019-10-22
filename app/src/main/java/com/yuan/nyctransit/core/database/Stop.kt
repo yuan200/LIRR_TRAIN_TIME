@@ -8,8 +8,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "stop")
 data class Stop(
-    @PrimaryKey(autoGenerate = true) var id: Long?,
-    @ColumnInfo("stop_id") @SerializedName("stop_id") var stopId: String,
+    @PrimaryKey @ColumnInfo("stop_id") @SerializedName("stop_id") var stopId: String,
     @ColumnInfo("stop_name") @SerializedName("stop_name") var stopName: String,
     @ColumnInfo("stop_desc") @SerializedName("stop_desc") var stopDesc: String,
     @ColumnInfo("stop_lat") @SerializedName("stop_lat") var stopLat: String,
@@ -18,7 +17,7 @@ data class Stop(
     @ColumnInfo("wheelchair_boarding") @SerializedName("wheelchair_boarding") var wheelchairBoarding: Int
 ) {
     companion object {
-        fun empty():Stop = Stop(0,"","","","","","",0)
+        fun empty():Stop = Stop("","","","","","",0)
     }
 }
 

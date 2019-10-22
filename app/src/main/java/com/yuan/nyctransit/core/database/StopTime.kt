@@ -7,9 +7,8 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.yuan.nyctransit.features.lirr.LirrGtfs
 
-@Entity(tableName = "stop_time")
+@Entity(tableName = "stop_time", primaryKeys = ["trip_id", "stop_id"])
 data class StopTime(
-    @PrimaryKey(autoGenerate = true) var id: Long?,
     @ColumnInfo("trip_id") @SerializedName("trip_id") var tripId: String,
     @ColumnInfo("arrival_time") @SerializedName("arrival_time") var arrivalTime: String,
     @ColumnInfo("departure_time") @SerializedName("departure_time") var departureTime: String,

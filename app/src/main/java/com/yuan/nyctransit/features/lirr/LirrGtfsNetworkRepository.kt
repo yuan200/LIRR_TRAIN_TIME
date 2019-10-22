@@ -1,11 +1,17 @@
 package com.yuan.nyctransit.features.lirr
 
 import android.content.Context
+import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.core.database.Stop
 import com.yuan.nyctransit.core.database.saveToDB
 import com.yuan.nyctransit.core.exception.Failure
 import com.yuan.nyctransit.core.functional.Either
 import com.yuan.nyctransit.core.platform.NetworkHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import timber.log.Timber
 import javax.inject.Inject
@@ -19,21 +25,42 @@ class LirrGtfsNetworkRepository
         throw UnsupportedOperationException()
     }
 
-    override fun lirrGtfs(context: Context): Either<Failure, LirrGtfs> {
+    override fun lirrGtfs(context: Context, channel: Channel<Int>): Either<Failure, LirrGtfs> {
         Timber.d("calling lirr Gtfs...")
         return when (networkHandler.isConnected) {
             //todo this transform doesn't look right
             true -> request(service.getLirrGtfs(), {
-                it.saveToDB(context)
-                it.gtfs!!.stops.forEach {
-                    it.saveToDB(context)
+                val db = LirrGtfsBase.getInstance(context)
+                val job = CoroutineScope(Dispatchers.Default).async {
+                    channel.send(10)
+                    db?.lirrGtfsDao()?.getRevised()
                 }
-                it.gtfs!!.stopTimes.forEach {
-                    it.saveToDB(context)
+                val dbJob = CoroutineScope(Dispatchers.IO).launch {
+                    val oldRevised = job.await()
+                    if (oldRevised == null || it.revised.after(oldRevised)) {
+                        it.saveToDB(context)
+                        channel.send(30)
+                        it.gtfs!!.stops.forEach {
+                            it.saveToDB(context)
+                        }
+                        channel.send(40)
+                        it.gtfs!!.stopTimes.forEach {
+                            it.saveToDB(context)
+                        }
+                        channel.send(60)
+                        it.gtfs!!.trips.forEach {
+                            it.saveToDB(context)
+                        }
+                        channel.send(70)
+                        it.gtfs!!.calendarDates.forEach {
+                            it.saveToDB(context)
+                        }
+                        channel.send(90)
+                        channel.send(100)
+                    }
+                    channel.send(100)
                 }
-                it.gtfs!!.trips.forEach {
-                    it.saveToDB(context)
-                }
+
                 it}, LirrGtfs.empty())
             false, null -> Either.Left(Failure.ServerError)
         }

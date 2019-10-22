@@ -83,12 +83,6 @@ fun ResponseBody.writeResponseBodyToDisk(
                     }
                 }
                 LirrFeed.stopTimeUpdateViewList = stopTimeUpdateViewList
-                for (item in feed.entityList) {
-                    if (item.hasTripUpdate()) {
-                        Timber.d(item.tripUpdate.toString())
-//                        Log.d("tripUpdate", item.tripUpdate.toString())
-                    }
-                }
 
                 val read = inputStream.read(fileReader)
                 if (read == -1) break

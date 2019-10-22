@@ -8,10 +8,9 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "trip")
 data class Trip(
-    @PrimaryKey(autoGenerate = true) var id: Long?,
     @ColumnInfo("route_id") @SerializedName("route_id") var routeId: String,
     @ColumnInfo("service_id") @SerializedName("service_id") var serviceId: String,
-    @ColumnInfo("trip_id") @SerializedName("trip_id") var tripId: String,
+    @PrimaryKey @ColumnInfo("trip_id") @SerializedName("trip_id") var tripId: String,
     @ColumnInfo("trip_headsign") @SerializedName("trip_headsign") var tripHeadsign: String,
     @ColumnInfo("trip_short_name") @SerializedName("trip_short_name") var tripShortName: String,
     @ColumnInfo("direction_id") @SerializedName("direction_id") var directionId: String,

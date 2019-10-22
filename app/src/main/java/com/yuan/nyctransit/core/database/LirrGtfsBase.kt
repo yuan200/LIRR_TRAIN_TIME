@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.yuan.nyctransit.features.lirr.LirrGtfs
-import com.yuan.nyctransit.features.lirr.StopDao
-import com.yuan.nyctransit.features.lirr.StopTimeDao
-import com.yuan.nyctransit.features.lirr.TripDao
+import androidx.room.TypeConverters
+import com.yuan.nyctransit.features.lirr.*
 
 //todo checkout room export schema
 @Database(
@@ -15,9 +13,11 @@ import com.yuan.nyctransit.features.lirr.TripDao
         LirrGtfs::class,
         Stop::class,
         Trip::class,
-        StopTime::class
+        StopTime::class,
+        CalendarDate::class
     ), version = 2
 )
+@TypeConverters(DateTimeConverters::class)
 abstract class LirrGtfsBase : RoomDatabase() {
 
     abstract fun lirrGtfsDao(): LirrGtfsDao
@@ -27,6 +27,8 @@ abstract class LirrGtfsBase : RoomDatabase() {
     abstract fun tripDao(): TripDao
 
     abstract fun stopTimeDao(): StopTimeDao
+
+    abstract fun calendarDateDao(): CalendarDateDao
 
     companion object {
         private var INSTANCE: LirrGtfsBase? = null
