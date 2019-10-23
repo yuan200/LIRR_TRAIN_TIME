@@ -1,6 +1,7 @@
 package com.yuan.nyctransit.features.lirr
 
 import android.content.Context
+import com.yuan.nyctransit.core.database.DateTimeConverters
 import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.core.database.Stop
 import com.yuan.nyctransit.core.database.saveToDB
@@ -17,9 +18,10 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class LirrGtfsNetworkRepository
-@Inject constructor(private val networkHandler: NetworkHandler,
-                    private val service: LirrGtfsService
-): LirrGtfsRepository {
+@Inject constructor(
+    private val networkHandler: NetworkHandler,
+    private val service: LirrGtfsService
+) : LirrGtfsRepository {
 
     override fun allStops(): Either<Failure, List<Stop>> {
         throw UnsupportedOperationException()
@@ -37,7 +39,12 @@ class LirrGtfsNetworkRepository
                 }
                 val dbJob = CoroutineScope(Dispatchers.IO).launch {
                     val oldRevised = job.await()
-                    if (oldRevised == null || it.revised.after(oldRevised)) {
+                    val convrter = DateTimeConverters()
+                    val latestRevisied = convrter.fromStringToDataTime(it.revised)
+                    if (oldRevised.isNullOrEmpty() || latestRevisied.after(
+                            convrter.fromStringToDataTime(oldRevised)
+                        )
+                    ) {
                         it.saveToDB(context)
                         channel.send(30)
                         it.gtfs!!.stops.forEach {
@@ -61,7 +68,8 @@ class LirrGtfsNetworkRepository
                     channel.send(100)
                 }
 
-                it}, LirrGtfs.empty())
+                it
+            }, LirrGtfs.empty())
             false, null -> Either.Left(Failure.ServerError)
         }
     }

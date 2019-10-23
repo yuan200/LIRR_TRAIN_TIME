@@ -67,11 +67,6 @@ fun ResponseBody.writeResponseBodyToDisk(
                                 stopName = job.await()
                                 tripHeadSign = tripJob.await()
                                 val arrivalTime = stopTimeJob.await()
-                                //todo call require api 26
-//                                val localTime = LocalTime.parse(arrivalTime, DateTimeFormatter.ofLocalizedTime( FormatStyle.SHORT))
-                                val localTime =
-                                    LocalTime.parse(arrivalTime, DateTimeFormatter.ISO_LOCAL_TIME)
-                                Timber.i(localTime.toString())
 
                                 val stopTimeUpdateView = StopTimeUpdateView(
                                     stopName, "",

@@ -11,13 +11,13 @@ import java.util.*
 data class LirrGtfs(
     @ColumnInfo("agency_id") @SerializedName("agency_id") var agencyId: String,
     @ColumnInfo("feed_version") @SerializedName("feed_version") var feedVersion: String,
-    @PrimaryKey var revised: Date,
+    @PrimaryKey var revised: String,
     @Ignore var gtfs: Gtfs? //todo is nullable ok here
 ) {
     //todo the constructor here is because it give error when it has @Ignore about
-    constructor(): this("", "", Date(), null)
+    constructor(): this("", "", "", null)
     companion object {
-        fun empty(): LirrGtfs = LirrGtfs("", "",Date(),null)
+        fun empty(): LirrGtfs = LirrGtfs("", "","",null)
 
     }
 

@@ -11,5 +11,6 @@ ext.versions = [
         room            :   "2.2.0-rc01",
         gson            :   "2.8.5",
         gsonConverter   :   "2.6.2",
-        viewModelScope  :   "2.1.0-beta01"
+        viewModelScope  :   "2.1.0-beta01",
+        threetenabp     :   "1.2.1"
 ]

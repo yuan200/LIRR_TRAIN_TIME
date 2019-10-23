@@ -21,5 +21,12 @@ class DateTimeConvertersTest {
         println(nowStr)
     }
 
+    @Test
+    fun StringToTime() {
+        val timeStr = "22:22:22"
+        val time = converter.fromStringToDataTime(timeStr)
+        println(time)
+    }
+
 
 }

@@ -37,7 +37,8 @@ class ApplicationModule(private val application: AndroidApplication) {
 
     @Provides @Named("webMta") @Singleton fun provideLirrGtfsRetrofit(): Retrofit {
         val gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+//            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+            .setDateFormat("HH:mm:ss")
             .create()
         return Retrofit.Builder()
             .baseUrl(LirrGtfsApi.link)

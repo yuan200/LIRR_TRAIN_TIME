@@ -1,5 +1,6 @@
 package com.yuan.nyctransit
 import android.app.Application
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.yuan.nyctransit.core.di.ApplicationComponent
 import com.yuan.nyctransit.core.di.ApplicationModule
 import com.yuan.nyctransit.core.di.DaggerApplicationComponent
@@ -22,6 +23,8 @@ class AndroidApplication: Application(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
         this.injectMembers()
+
+        AndroidThreeTen.init(this)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

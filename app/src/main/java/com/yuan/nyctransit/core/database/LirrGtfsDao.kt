@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.yuan.nyctransit.features.lirr.LirrGtfs
-import java.util.*
 
 @Dao
 interface LirrGtfsDao {
@@ -14,7 +13,7 @@ interface LirrGtfsDao {
     fun getAll(): List<LirrGtfs>
 
     @Query("SELECT revised FROM gtfs_overview WHERE revised IS NOT NULL LIMIT 1")
-    suspend fun getRevised(): Date
+    suspend fun getRevised(): String
 
     @Insert(onConflict = REPLACE)
     fun insert(lirrGtfs: LirrGtfs)

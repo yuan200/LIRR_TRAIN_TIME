@@ -8,17 +8,23 @@ class DateTimeConverters {
 
     val dateTimePattern = "yyyy-MM-dd'T'HH:mm:ssZ"
 
+    val datePattern = "HH:mm:ss"
 
     @TypeConverter
     fun fromStringToDataTime(str: String): Date {
-        val simpleDateFormat = SimpleDateFormat(dateTimePattern)
-        return simpleDateFormat.parse(str)
+        val simpleDateFormat: SimpleDateFormat
+        if (str.contains("T")) simpleDateFormat = SimpleDateFormat(dateTimePattern)
+        else simpleDateFormat = SimpleDateFormat(datePattern)
 
+        return simpleDateFormat.parse(str)
     }
 
     @TypeConverter
     fun fromDateTimeToString(date: Date): String {
-        val simpleDateFormat = SimpleDateFormat(dateTimePattern)
+        val simpleDateFormat: SimpleDateFormat
+        if (date.toString().length > 8) simpleDateFormat = SimpleDateFormat(dateTimePattern)
+        else simpleDateFormat = SimpleDateFormat(datePattern)
+
         return simpleDateFormat.format(date)
     }
 

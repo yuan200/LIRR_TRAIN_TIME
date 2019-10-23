@@ -98,6 +98,9 @@ dependencies {
     //gson convertor
     implementation "com.squareup.retrofit2:converter-gson:${versions.gsonConverter}"
 
+    //JSR-310 backport
+    implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"
+
     implementation "com.google.transit:gtfs-realtime-bindings:0.0.4"
 
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"

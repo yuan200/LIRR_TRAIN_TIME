@@ -6,11 +6,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.yuan.nyctransit.features.lirr.LirrGtfs
+import java.util.*
 
 @Entity(tableName = "stop_time", primaryKeys = ["trip_id", "stop_id"])
 data class StopTime(
     @ColumnInfo("trip_id") @SerializedName("trip_id") var tripId: String,
-    @ColumnInfo("arrival_time") @SerializedName("arrival_time") var arrivalTime: String,
+    @ColumnInfo("arrival_time") @SerializedName("arrival_time") var arrivalTime: Date,
     @ColumnInfo("departure_time") @SerializedName("departure_time") var departureTime: String,
     @ColumnInfo("stop_id") @SerializedName("stop_id") var stopId: String,
     @ColumnInfo("stop_sequence") @SerializedName("stop_sequence") var stopSequence: Int
