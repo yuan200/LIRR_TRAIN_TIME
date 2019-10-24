@@ -51,7 +51,7 @@ class LirrGtfsNetworkRepository
                             it.saveToDB(context)
                         }
                         channel.send(40)
-                        it.gtfs!!.stopTimes.forEach {
+                        it.gtfs!!.stop_times.forEach {
                             it.saveToDB(context)
                         }
                         channel.send(60)
@@ -59,7 +59,7 @@ class LirrGtfsNetworkRepository
                             it.saveToDB(context)
                         }
                         channel.send(70)
-                        it.gtfs!!.calendarDates.forEach {
+                        it.gtfs!!.calendar_dates.forEach {
                             it.saveToDB(context)
                         }
                         channel.send(90)

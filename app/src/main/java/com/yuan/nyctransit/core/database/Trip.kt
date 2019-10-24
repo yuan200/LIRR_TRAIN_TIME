@@ -4,17 +4,19 @@ import android.content.Context
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 @Entity(tableName = "trip")
+@JsonClass(generateAdapter = true)
 data class Trip(
-    @ColumnInfo("route_id") @SerializedName("route_id") var routeId: String,
-    @ColumnInfo("service_id") @SerializedName("service_id") var serviceId: String,
-    @PrimaryKey @ColumnInfo("trip_id") @SerializedName("trip_id") var tripId: String,
-    @ColumnInfo("trip_headsign") @SerializedName("trip_headsign") var tripHeadsign: String,
-    @ColumnInfo("trip_short_name") @SerializedName("trip_short_name") var tripShortName: String,
-    @ColumnInfo("direction_id") @SerializedName("direction_id") var directionId: String,
-    @ColumnInfo("shape_id") @SerializedName("shape_id") var shapeId: String
+    @ColumnInfo("route_id") @Json(name = "route_id") var routeId: String,
+    @ColumnInfo("service_id") @Json(name = "service_id") var serviceId: String,
+    @PrimaryKey @ColumnInfo("trip_id") @Json(name = "trip_id") var tripId: String,
+    @ColumnInfo("trip_headsign") @Json(name = "trip_headsign") var tripHeadsign: String,
+    @ColumnInfo("trip_short_name") @Json(name = "trip_short_name") var tripShortName: String,
+    @ColumnInfo("direction_id") @Json(name = "direction_id") var directionId: String,
+    @ColumnInfo("shape_id") @Json(name = "shape_id") var shapeId: String
 )
 
 fun Trip.saveToDB(context: Context) = LirrGtfsBase.getInstance(context)!!.tripDao().insert(this)

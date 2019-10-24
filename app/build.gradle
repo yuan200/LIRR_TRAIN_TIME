@@ -89,14 +89,12 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
 
-    //retrofit
+    //retrofit moshi
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.moshi:moshi:${versions.moshi}"
+    implementation "com.squareup.retrofit2:converter-moshi:${versions.convertMoshi}"
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.8.0")
 
-    //gson
-    implementation "com.google.code.gson:gson:${versions.gson}"
-
-    //gson convertor
-    implementation "com.squareup.retrofit2:converter-gson:${versions.gsonConverter}"
 
     //JSR-310 backport
     implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"

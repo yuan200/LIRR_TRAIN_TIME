@@ -1,12 +1,12 @@
 package com.yuan.nyctransit.core.database
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class FeedInfo(
-    @SerializedName("feed_publisher_name") var feedPublisherName: String,
-    @SerializedName("feed_publisher_url") var feedPublisherUrl: String,
-    @SerializedName("feed_timezone") var feedTimezone: String,
-    @SerializedName("feed_lang") var feedLang: String,
-    @SerializedName("feed_version") var feedVersion: String
+    @Json(name = "feed_publisher_name") var feedPublisherName: String,
+    @Json(name = "feed_publisher_url") var feedPublisherUrl: String,
+    @Json(name = "feed_timezone") var feedTimezone: String,
+    @Json(name = "feed_lang") var feedLang: String,
+    @Json(name = "feed_version") var feedVersion: String
 ) {
 }

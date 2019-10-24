@@ -12,5 +12,7 @@ ext.versions = [
         gson            :   "2.8.5",
         gsonConverter   :   "2.6.2",
         viewModelScope  :   "2.1.0-beta01",
-        threetenabp     :   "1.2.1"
+        threetenabp     :   "1.2.1",
+        moshi           :   "1.8.0",
+        convertMoshi    :   "2.6.2"
 ]

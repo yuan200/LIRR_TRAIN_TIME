@@ -1,13 +1,15 @@
 package com.yuan.nyctransit.core.database
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Route(
-    @SerializedName("route_id") var routeId: String,
-    @SerializedName("route_short_name") var routeShortName: String?,
-    @SerializedName("route_long_name") var routeLongName: String,
-    @SerializedName("route_type") var routeType: String,
-    @SerializedName("route_color") var routeColor: String,
-    @SerializedName("route_text_color") var routeTextColor: String
+    @Json(name = "route_id") var routeId: String,
+    @Json(name = "route_short_name") var routeShortName: String?,
+    @Json(name = "route_long_name") var routeLongName: String,
+    @Json(name = "route_type") var routeType: String,
+    @Json(name = "route_color") var routeColor: String,
+    @Json(name = "route_text_color") var routeTextColor: String
 ) {
 }
