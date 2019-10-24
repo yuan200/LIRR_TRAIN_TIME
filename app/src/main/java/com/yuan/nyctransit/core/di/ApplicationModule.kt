@@ -42,7 +42,7 @@ class ApplicationModule(private val application: AndroidApplication) {
             .create()
         return Retrofit.Builder()
             .baseUrl(LirrGtfsApi.link)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(GsonConverterFactory.create())
             .client(createClient())
             .build()
     }

@@ -1,21 +1,20 @@
 package com.yuan.nyctransit.core.database
 
-import androidx.room.TypeConverters
+import androidx.room.TypeConverter
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
-import org.threeten.bp.format.FormatStyle
 
 //todo move to a different package
 class LocalTimeConverters {
 
-    @TypeConverters
+    @TypeConverter
     fun fromStringToLocalTime(str: String): LocalTime =
-        LocalTime.parse(str, DateTimeFormatter.ofLocalizedTime(FormatStyle.FULL))
+        LocalTime.parse(str, DateTimeFormatter.ofPattern("HH:mm:ss"))
 
 
-    @TypeConverters
+    @TypeConverter
     fun fromLocalTimeToString(localTime: LocalTime): String {
-        val formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+        val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
         return localTime.format(formatter)
     }
 }

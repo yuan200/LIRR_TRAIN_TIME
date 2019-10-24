@@ -87,6 +87,7 @@ class LirrGtfsNetworkRepository
             }
         } catch (exception: Throwable) {
             Either.Left(Failure.ServerError)
+            throw exception
         }
     }
 }
