@@ -35,7 +35,6 @@ class ApplicationModule(private val application: AndroidApplication) {
     : LirrGtfsRepository = dataSource
 
     @Provides @Named("webMta") @Singleton fun provideLirrGtfsRetrofit(): Retrofit {
-
         return Retrofit.Builder()
             .baseUrl(LirrGtfsApi.link)
             .addConverterFactory(MoshiConverterFactory.create())

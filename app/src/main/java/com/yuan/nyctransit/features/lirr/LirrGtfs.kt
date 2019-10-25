@@ -31,6 +31,7 @@ fun LirrGtfs.saveToDB(context: Context) {
     val result = db.lirrGtfsDao().getAll()
     result.toString()
 }
+@JsonClass(generateAdapter = true)
 data class Gtfs(
     @Json(name = "feed_info") var feedInfo: FeedInfo,
     var agency: Agency,
