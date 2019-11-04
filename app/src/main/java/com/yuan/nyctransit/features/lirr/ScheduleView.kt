@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
+import com.yuan.nyctransit.R
 
 class ScheduleView: ConstraintLayout {
 
@@ -17,8 +19,11 @@ class ScheduleView: ConstraintLayout {
     var trainNameTV: TextView
     var scheduleTime: TextView
     var trainTimeTV: TextView
+    var stopTV: TextView
 
     init {
+
+        setBackgroundColor(ContextCompat.getColor(context, R.color.scheduleViewPrimaryColor))
 
         val lineBorder = View(context).apply {
             id = View.generateViewId()
@@ -44,14 +49,18 @@ class ScheduleView: ConstraintLayout {
         }
         addView(trainTimeTV)
 
+        stopTV = TextView(context).apply {
+            id = View.generateViewId()
+        }
+        addView(stopTV)
+
         val set = ConstraintSet().also {
             it.clone(this)
         }
-//        set.connect(trainTimeTV.id, ConstraintSet.LEFT, trainNameTV.id, ConstraintSet.RIGHT)
-//        set.createHorizontalChain(ConstraintSet.PARENT_ID, ConstraintSet.LEFT,ConstraintSet.PARENT_ID, ConstraintSet.RIGHT,
-//            intArrayOf(trainNameTV.id, trainTimeTV.id), null, ConstraintSet.CHAIN_SPREAD)
+
         set.connect(trainTimeTV.id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 30)
         set.connect(scheduleTime.id, ConstraintSet.TOP, trainNameTV.id, ConstraintSet.BOTTOM, 10)
+        set.connect(stopTV.id, ConstraintSet.TOP, scheduleTime.id, ConstraintSet.BOTTOM, 10)
         set.applyTo(this)
 
     }

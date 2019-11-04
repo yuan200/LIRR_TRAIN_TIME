@@ -16,7 +16,7 @@ data class Trip(
     @ColumnInfo("trip_headsign") @Json(name = "trip_headsign") var tripHeadsign: String,
     @ColumnInfo("trip_short_name") @Json(name = "trip_short_name") var tripShortName: String,
     @ColumnInfo("direction_id") @Json(name = "direction_id") var directionId: String,
-    @ColumnInfo("shape_id") @Json(name = "shape_id") var shapeId: String
+    @ColumnInfo("shape_id") @Json(name = "shape_id") var shapeId: String?
 )
 
 fun Trip.saveToDB(context: Context) = LirrGtfsBase.getInstance(context)!!.tripDao().insert(this)

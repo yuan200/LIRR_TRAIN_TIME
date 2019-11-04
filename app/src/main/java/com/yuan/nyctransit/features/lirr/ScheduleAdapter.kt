@@ -26,7 +26,8 @@ class ScheduleAdapter:
         val view = holder.itemView as ScheduleView
         view.trainNameTV.text = collection[position].tripHeadSign
         view.trainTimeTV.text = collection[position].delay.toString()
-        view.scheduleTime.text = collection[position].arrivingTime.toString()
+        view.scheduleTime.text = collection[position].arrivingTimeStr.toString()
+        view.stopTV.text = collection[position].stopName
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -10,10 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalDateTime
 import timber.log.Timber
 import java.io.*
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 
 fun ResponseBody.writeResponseBodyToDisk(
@@ -62,6 +62,9 @@ fun ResponseBody.writeResponseBodyToDisk(
                             val stopTimeJob = CoroutineScope(Dispatchers.IO).async {
                                 db?.stopTimeDao()!!.getArrivalTime(tripId, stopId).arrivalTime
                             }
+//                            val stopTimeJob = CoroutineScope(Dispatchers.IO).async {
+//                                db?.stopTimeDao()!!.getStopTimeByStop("132","20191102").arrivalTime
+//                            }
                             Timber.i(tripId)
                             CoroutineScope(Dispatchers.Main).launch {
                                 stopName = job.await()
@@ -69,14 +72,41 @@ fun ResponseBody.writeResponseBodyToDisk(
                                 val arrivalTime = stopTimeJob.await()
 
                                 val stopTimeUpdateView = StopTimeUpdateView(
-                                    stopName, "",
-                                    "", arrivalTime, stopTimeUpdate.arrival.delay, tripHeadSign
+                                    stopName,
+                                    "",
+                                    "",
+                                    arrivalTime,
+                                    null,
+                                    stopTimeUpdate.arrival.delay,
+                                    tripHeadSign
                                 )
                                 stopTimeUpdateViewList.add(stopTimeUpdateView)
                             }
                         }
                     }
                 }
+                CoroutineScope(Dispatchers.IO).launch {
+                    val db = LirrGtfsBase.getInstance(context)
+                    val today = LocalDate.now().toDateString()
+                    val resultList = db?.stopTimeDao()?.getStopTimeByStop(stopId, today)
+                    resultList?.forEach {
+                        val tripHeadSignJob = db?.tripDao()!!.getByTripId(it.tripId)!!.tripHeadsign
+                        var stopName = db?.stopDao()!!.getStop(stopId).stopName
+                        val stopTimeUpdateView = StopTimeUpdateView(
+                            stopName,
+                            "",
+                            "",
+                            it.arrivalTime,
+                            null,
+                            0,
+                            tripHeadSignJob
+                        )
+                        if (!stopTimeUpdateView.arrivingTime!!.isBefore(LocalDateTime.now())){
+                            stopTimeUpdateViewList.add(stopTimeUpdateView)
+                        }
+                    }
+                }
+                Thread.sleep(3000)
                 LirrFeed.stopTimeUpdateViewList = stopTimeUpdateViewList
 
                 val read = inputStream.read(fileReader)
