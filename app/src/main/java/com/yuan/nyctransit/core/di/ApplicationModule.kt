@@ -2,6 +2,8 @@ package com.yuan.nyctransit.core.di
 
 import android.app.Application
 import android.content.Context
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.yuan.nyctransit.AndroidApplication
 import com.yuan.nyctransit.BuildConfig
 import com.yuan.nyctransit.core.database.LirrGtfsBase
@@ -11,6 +13,7 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -35,9 +38,12 @@ class ApplicationModule(private val application: AndroidApplication) {
     : LirrGtfsRepository = dataSource
 
     @Provides @Named("webMta") @Singleton fun provideLirrGtfsRetrofit(): Retrofit {
+        val moshi = Moshi.Builder()
+            .add(Date::class.java, Rfc3339DateJsonAdapter())
+            .build()
         return Retrofit.Builder()
             .baseUrl(LirrGtfsApi.link)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(createClient())
             .build()
     }

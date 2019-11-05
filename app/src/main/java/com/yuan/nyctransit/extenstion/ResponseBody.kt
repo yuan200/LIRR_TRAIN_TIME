@@ -41,7 +41,7 @@ fun ResponseBody.writeResponseBodyToDisk(
                 val feed: GtfsRealtime.FeedMessage = GtfsRealtime.FeedMessage.parseFrom(inputStream)
                 LirrFeed.entityList = feed.entityList
 
-                val stopTimeUpdateViewList = mutableListOf<StopTimeUpdateView>()
+                var stopTimeUpdateViewList = mutableListOf<StopTimeUpdateView>()
 
                 for (entity in LirrFeed.entityList) {
                     for (stopTimeUpdate in entity.tripUpdate.stopTimeUpdateList) {
@@ -85,6 +85,7 @@ fun ResponseBody.writeResponseBodyToDisk(
                         }
                     }
                 }
+                val hashMap = HashMap<String, StopTimeUpdateView>()
                 CoroutineScope(Dispatchers.IO).launch {
                     val db = LirrGtfsBase.getInstance(context)
                     val today = LocalDate.now().toDateString()
@@ -101,12 +102,26 @@ fun ResponseBody.writeResponseBodyToDisk(
                             0,
                             tripHeadSignJob
                         )
+                        //todo use a offset so it could show delay train
                         if (!stopTimeUpdateView.arrivingTime!!.isBefore(LocalDateTime.now())){
-                            stopTimeUpdateViewList.add(stopTimeUpdateView)
+                            hashMap[stopTimeUpdateView.arrivingTimeStr + stopTimeUpdateView.tripHeadSign] = stopTimeUpdateView
+//                            stopTimeUpdateViewList.add(stopTimeUpdateView)
                         }
                     }
                 }
+                //todo bad bad
                 Thread.sleep(3000)
+                stopTimeUpdateViewList.forEach {
+                    val key = it.arrivingTimeStr + it.tripHeadSign
+                    if (hashMap.containsKey(key)) {
+                        hashMap[key].apply {
+                            this!!.delay = it.delay
+                        }
+                    }
+                }
+                stopTimeUpdateViewList = mutableListOf()
+                hashMap.forEach { _, stopTimeView -> stopTimeUpdateViewList.add(stopTimeView) }
+                stopTimeUpdateViewList.sortBy { stopTimeUpdateView -> stopTimeUpdateView.arrivingTime }
                 LirrFeed.stopTimeUpdateViewList = stopTimeUpdateViewList
 
                 val read = inputStream.read(fileReader)

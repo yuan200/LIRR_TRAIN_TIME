@@ -40,7 +40,8 @@ class LirrGtfsNetworkRepository
                 val dbJob = CoroutineScope(Dispatchers.IO).launch {
                     val oldRevised = job.await()
                     val convrter = DateTimeConverters()
-                    val latestRevisied = convrter.fromStringToDataTime(it.revised)
+//                    val latestRevisied = convrter.fromStringToDataTime(it.revised)
+                    val latestRevisied = it.revised
                     if (oldRevised.isNullOrEmpty() || latestRevisied.after(
                             convrter.fromStringToDataTime(oldRevised)
                         )

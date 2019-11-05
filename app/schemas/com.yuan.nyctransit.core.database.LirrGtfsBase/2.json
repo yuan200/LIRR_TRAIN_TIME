@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "9507a86db78f5b6731420a4b18954113",
+    "identityHash": "fe1a51ee1f25ac28a34a2381e7e9cb1a",
     "entities": [
       {
         "tableName": "gtfs_overview",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`agency_id` TEXT NOT NULL, `feed_version` TEXT NOT NULL, `revised` TEXT NOT NULL, PRIMARY KEY(`revised`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`agency_id` TEXT NOT NULL, `feed_version` TEXT NOT NULL, `revised` TEXT NOT NULL, PRIMARY KEY(`agency_id`, `feed_version`))",
         "fields": [
           {
             "fieldPath": "agencyId",
@@ -29,7 +29,8 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "revised"
+            "agency_id",
+            "feed_version"
           ],
           "autoGenerate": false
         },
@@ -230,7 +231,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9507a86db78f5b6731420a4b18954113')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fe1a51ee1f25ac28a34a2381e7e9cb1a')"
     ]
   }
 }

@@ -9,7 +9,7 @@ data class StopTimeUpdateView(
     val destination: String,
     var arrivingTimeStr: String,
     var arrivingTime: LocalDateTime?,
-    val delay: Int,
+    var delay: Int = 0,
     val tripHeadSign: String = ""
 ){
     init {
