@@ -18,7 +18,8 @@ class ScheduleView: ConstraintLayout {
 
     var trainNameTV: TextView
     var scheduleTime: TextView
-    var trainTimeTV: TextView
+    var realTimeUpdateTV: TextView
+    var minTV: TextView
     var stopTV: TextView
 
     init {
@@ -44,10 +45,16 @@ class ScheduleView: ConstraintLayout {
         }
         addView(scheduleTime)
 
-        trainTimeTV = TextView(context).apply {
+        realTimeUpdateTV = TextView(context).apply {
             id = generateViewId()
         }
-        addView(trainTimeTV)
+        addView(realTimeUpdateTV)
+
+        minTV = TextView(context).apply {
+            text = "min"
+            id = View.generateViewId()
+        }
+        addView(minTV)
 
         stopTV = TextView(context).apply {
             id = View.generateViewId()
@@ -58,9 +65,11 @@ class ScheduleView: ConstraintLayout {
             it.clone(this)
         }
 
-        set.connect(trainTimeTV.id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 30)
         set.connect(scheduleTime.id, ConstraintSet.TOP, trainNameTV.id, ConstraintSet.BOTTOM, 10)
         set.connect(stopTV.id, ConstraintSet.TOP, scheduleTime.id, ConstraintSet.BOTTOM, 10)
+        set.connect(realTimeUpdateTV.id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 30)
+        set.connect(minTV.id, ConstraintSet.TOP, realTimeUpdateTV.id, ConstraintSet.BOTTOM)
+        set.connect(minTV.id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 30)
         set.applyTo(this)
 
     }
