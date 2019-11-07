@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fe1a51ee1f25ac28a34a2381e7e9cb1a",
+    "identityHash": "c3a1f6b74e04582e11f76ecc1e8a36e9",
     "entities": [
       {
         "tableName": "gtfs_overview",
@@ -226,12 +226,62 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Route",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` TEXT NOT NULL, `route_short_name` TEXT, `route_long_name` TEXT NOT NULL, `route_type` TEXT NOT NULL, `route_color` TEXT NOT NULL, `route_text_color` TEXT NOT NULL, PRIMARY KEY(`route_id`))",
+        "fields": [
+          {
+            "fieldPath": "route_id",
+            "columnName": "route_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "route_short_name",
+            "columnName": "route_short_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "route_long_name",
+            "columnName": "route_long_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "route_type",
+            "columnName": "route_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "route_color",
+            "columnName": "route_color",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "route_text_color",
+            "columnName": "route_text_color",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "route_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fe1a51ee1f25ac28a34a2381e7e9cb1a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c3a1f6b74e04582e11f76ecc1e8a36e9')"
     ]
   }
 }

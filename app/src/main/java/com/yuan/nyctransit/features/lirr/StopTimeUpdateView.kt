@@ -10,7 +10,8 @@ data class StopTimeUpdateView(
     var arrivingTimeStr: String,
     var arrivingTime: LocalDateTime?,
     var delay: Int = 0,
-    val tripHeadSign: String = ""
+    val tripHeadSign: String = "",
+    val routeColor: String = "FFFFFF"
 ){
     init {
         computeArrivingTime()

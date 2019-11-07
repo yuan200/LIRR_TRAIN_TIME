@@ -14,7 +14,8 @@ import com.yuan.nyctransit.features.lirr.*
         Stop::class,
         Trip::class,
         StopTime::class,
-        CalendarDate::class
+        CalendarDate::class,
+        Route::class
     ), version = 1
 )
 @TypeConverters(DateTimeConverters::class)
@@ -29,6 +30,8 @@ abstract class LirrGtfsBase : RoomDatabase() {
     abstract fun stopTimeDao(): StopTimeDao
 
     abstract fun calendarDateDao(): CalendarDateDao
+
+    abstract fun routeDao(): RouteDao
 
     companion object {
         private var INSTANCE: LirrGtfsBase? = null

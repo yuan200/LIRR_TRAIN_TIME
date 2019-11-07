@@ -14,4 +14,7 @@ interface TripDao {
 
     @Query("SELECT * FROM trip WHERE trip_id = :tripId")
     suspend fun getByTripId(tripId: String): Trip
+
+    @Query("SELECT route_id from trip where trip_id = :tripId")
+    suspend fun getRouteId(tripId: String): String
 }
