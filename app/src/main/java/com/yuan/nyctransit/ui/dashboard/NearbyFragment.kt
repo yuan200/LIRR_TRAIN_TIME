@@ -39,6 +39,8 @@ class NearbyFragment : Fragment() {
 
     private lateinit var viewAdapter: ScheduleAdapter
 
+    private var alreadySubscribeFeed = false
+
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     @Inject lateinit var nearbyViewModelFactory: ViewModelProvider.AndroidViewModelFactory
@@ -53,9 +55,33 @@ class NearbyFragment : Fragment() {
         nearbyViewModel =
             ViewModelProviders.of(this,nearbyViewModelFactory)[NearbyViewModel::class.java]
 
-        nearbyViewModel.getFeed().observe(this, Observer {
-            viewAdapter.collection = it
-        })
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!).apply {
+            lastLocation.addOnSuccessListener {
+                currentLocation = it ?: Location("empty").apply {
+                    latitude = 0.0
+                    longitude = 0.0
+                }
+
+                nearbyViewModel.currentLocation.value = currentLocation
+
+                if (!alreadySubscribeFeed) {
+                    alreadySubscribeFeed = true
+                    nearbyViewModel.currentLocation.observe(this@NearbyFragment, Observer {
+                        currentLocation = it
+                    })
+
+                    nearbyViewModel.getFeed().observe(this@NearbyFragment, Observer {
+                        viewAdapter.collection = it
+                    })
+                }
+
+                val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
+                mMap.addMarker(MarkerOptions().position(latlng).title("Maker in Sydney"))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 12f))
+            }
+        }
+
 
 
         val root = inflater.inflate(R.layout.fragment_map, container, false)
@@ -83,18 +109,7 @@ class NearbyFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!).apply {
-            lastLocation.addOnSuccessListener {
-                currentLocation = it ?: Location("empty").apply {
-                    latitude = 0.0
-                    longitude = 0.0
-                }
 
-                val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
-                mMap.addMarker(MarkerOptions().position(latlng).title("Maker in Sydney"))
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 12f))
-            }
-        }
 
     }
 }
