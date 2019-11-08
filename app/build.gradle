@@ -56,6 +56,9 @@ dependencies {
     //android material
     implementation "com.google.android.material:material:${versions.material}"
 
+    //facebook shimmer
+    implementation "com.facebook.shimmer:shimmer:${versions.shimmer}"
+
     //viewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.viewModelScope}"
 

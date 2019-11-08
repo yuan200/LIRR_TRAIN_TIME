@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
+import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -73,6 +74,10 @@ class NearbyFragment : Fragment() {
 
         val adapterList = LirrFeed.stopTimeUpdateViewList
         viewAdapter = ScheduleAdapter()
+        val placeHolderList = mutableListOf(StopTimeUpdateView.placeHolder(),
+            StopTimeUpdateView.placeHolder(),
+            StopTimeUpdateView.placeHolder())
+        viewAdapter.collection = placeHolderList
 
         recyclerView = root.findViewById<RecyclerView>(R.id.schedule_recycler_view).apply {
             setHasFixedSize(true)

@@ -66,8 +66,6 @@ class NearbyViewModel
                 val distance = getDistance(
                     it.stopLat.toDouble(),
                     it.stopLon.toDouble(),
-//                    40.744538,
-//                    -73.644054
                     currentLocation.value!!.latitude,
                     currentLocation.value!!.longitude
 

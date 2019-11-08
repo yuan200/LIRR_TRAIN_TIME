@@ -8,11 +8,8 @@ import com.yuan.nyctransit.core.database.saveToDB
 import com.yuan.nyctransit.core.exception.Failure
 import com.yuan.nyctransit.core.functional.Either
 import com.yuan.nyctransit.core.platform.NetworkHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,10 +34,10 @@ class LirrGtfsNetworkRepository
                     channel.send(10)
                     db?.lirrGtfsDao()?.getRevised()
                 }
+                runBlocking {
                 val dbJob = CoroutineScope(Dispatchers.IO).launch {
                     val oldRevised = job.await()
                     val convrter = DateTimeConverters()
-//                    val latestRevisied = convrter.fromStringToDataTime(it.revised)
                     val latestRevisied = it.revised
                     if (oldRevised.isNullOrEmpty() || latestRevisied.after(
                             convrter.fromStringToDataTime(oldRevised)
@@ -53,25 +50,31 @@ class LirrGtfsNetworkRepository
                         }
                         channel.send(40)
                         it.gtfs!!.stop_times.forEach {
-                            it.saveToDB(context)
+                            launch {
+                                it.saveToDB(context)
+                            }
                         }
                         it.gtfs!!.routes.forEach {
                             it.saveToDB(context)
                         }
                         channel.send(60)
                         it.gtfs!!.trips.forEach {
-                            it.saveToDB(context)
+                            launch {
+                                it.saveToDB(context)
+                            }
                         }
                         channel.send(70)
                         it.gtfs!!.calendar_dates.forEach {
-                            it.saveToDB(context)
+                            launch {
+                                it.saveToDB(context)
+                            }
                         }
                         channel.send(90)
-                        channel.send(100)
                     }
+                }
+                    dbJob.join()
                     channel.send(100)
                 }
-
                 it
             }, LirrGtfs.empty())
             false, null -> Either.Left(Failure.ServerError)

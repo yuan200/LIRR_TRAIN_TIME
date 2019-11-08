@@ -17,7 +17,22 @@ data class StopTimeUpdateView(
         computeArrivingTime()
     }
 
+    companion object {
+        fun placeHolder(): StopTimeUpdateView =
+            StopTimeUpdateView(
+                "",
+                "",
+                "",
+                "00:00:00",
+                null,
+                0,
+                "",
+                "FFFFFF"
+            )
+    }
+
     private fun computeArrivingTime() {
+        if (arrivingTimeStr.isEmpty()) throw IllegalStateException("time can not be empty string")
         val timeList =arrivingTimeStr.split(":")
         var hour = timeList[0].toInt()
         val minute = timeList[1].toInt()
