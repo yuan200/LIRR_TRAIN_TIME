@@ -16,11 +16,18 @@ class ScheduleView: ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    var trainNameTV: TextView
+    var tripHeadSignTV: TextView
     var scheduleTime: TextView
     var realTimeUpdateTV: TextView
     var minTV: TextView
     var stopTV: TextView
+    var routeColor: String = "000000"
+    set(value) {
+        var intColor = Color.parseColor("#$value")
+        field = value
+        tripHeadSignTV.setTextColor(Color.WHITE)
+        tripHeadSignTV.setBackgroundColor(intColor)
+    }
 
     init {
 
@@ -35,10 +42,10 @@ class ScheduleView: ConstraintLayout {
         addView(lineBorder)
 
         id = generateViewId()
-        trainNameTV = TextView(context).apply {
+        tripHeadSignTV = TextView(context).apply {
             id = generateViewId()
         }
-        addView(trainNameTV)
+        addView(tripHeadSignTV)
 
         scheduleTime = TextView(context).apply {
             id = View.generateViewId()
@@ -65,7 +72,7 @@ class ScheduleView: ConstraintLayout {
             it.clone(this)
         }
 
-        set.connect(scheduleTime.id, ConstraintSet.TOP, trainNameTV.id, ConstraintSet.BOTTOM, 10)
+        set.connect(scheduleTime.id, ConstraintSet.TOP, tripHeadSignTV.id, ConstraintSet.BOTTOM, 10)
         set.connect(stopTV.id, ConstraintSet.TOP, scheduleTime.id, ConstraintSet.BOTTOM, 10)
         set.connect(realTimeUpdateTV.id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 30)
         set.connect(minTV.id, ConstraintSet.TOP, realTimeUpdateTV.id, ConstraintSet.BOTTOM)

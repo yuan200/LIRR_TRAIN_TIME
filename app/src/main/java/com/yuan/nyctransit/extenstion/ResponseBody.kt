@@ -43,6 +43,7 @@ fun ResponseBody.writeResponseBodyToDisk(
 
                 var stopTimeUpdateViewList = mutableListOf<StopTimeUpdateView>()
 
+                //stop time from real time api
                 for (entity in LirrFeed.entityList) {
                     for (stopTimeUpdate in entity.tripUpdate.stopTimeUpdateList) {
                         if (stopId == stopTimeUpdate.stopId) {
@@ -85,6 +86,8 @@ fun ResponseBody.writeResponseBodyToDisk(
                         }
                     }
                 }
+
+                //schedule time from local database
                 val hashMap = HashMap<String, StopTimeUpdateView>()
                 CoroutineScope(Dispatchers.IO).launch {
                     val db = LirrGtfsBase.getInstance(context)
@@ -93,6 +96,8 @@ fun ResponseBody.writeResponseBodyToDisk(
                     resultList?.forEach {
                         val tripHeadSignJob = db?.tripDao()!!.getByTripId(it.tripId)!!.tripHeadsign
                         var stopName = db?.stopDao()!!.getStop(stopId).stopName
+                        val routeId = db?.tripDao()!!.getRouteId(it.tripId)
+                        val routeColor = db?.routeDao().getRouteColor(routeId)
                         val stopTimeUpdateView = StopTimeUpdateView(
                             stopName,
                             "",
@@ -100,7 +105,8 @@ fun ResponseBody.writeResponseBodyToDisk(
                             it.arrivalTime,
                             null,
                             0,
-                            tripHeadSignJob
+                            tripHeadSignJob,
+                            routeColor
                         )
                         //todo use a offset so it could show delay train
                         if (!stopTimeUpdateView.arrivingTime!!.isBefore(LocalDateTime.now())){
@@ -110,6 +116,7 @@ fun ResponseBody.writeResponseBodyToDisk(
                     }
                 }
                 //todo bad bad
+                //update schedule time according to the delay from api
                 Thread.sleep(3000)
                 stopTimeUpdateViewList.forEach {
                     val key = it.arrivingTimeStr + it.tripHeadSign

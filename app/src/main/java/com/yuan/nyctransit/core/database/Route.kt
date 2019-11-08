@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.JsonClass
 
-@Entity
+@Entity(tableName = "route")
 @JsonClass(generateAdapter = true)
 data class Route(
     @PrimaryKey var route_id: String,

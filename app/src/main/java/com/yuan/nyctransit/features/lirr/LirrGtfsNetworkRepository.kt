@@ -55,6 +55,9 @@ class LirrGtfsNetworkRepository
                         it.gtfs!!.stop_times.forEach {
                             it.saveToDB(context)
                         }
+                        it.gtfs!!.routes.forEach {
+                            it.saveToDB(context)
+                        }
                         channel.send(60)
                         it.gtfs!!.trips.forEach {
                             it.saveToDB(context)

@@ -16,7 +16,7 @@ import com.yuan.nyctransit.features.lirr.*
         StopTime::class,
         CalendarDate::class,
         Route::class
-    ), version = 1
+    ), version = 2
 )
 @TypeConverters(DateTimeConverters::class)
 abstract class LirrGtfsBase : RoomDatabase() {

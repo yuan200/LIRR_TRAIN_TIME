@@ -41,3 +41,5 @@ data class Gtfs(
     var stop_times: List<StopTime>,
     var calendar_dates: List<CalendarDate>
 )
+
+fun Route.saveToDB(context: Context) = LirrGtfsBase.getInstance(context)!!.routeDao().insert(this)

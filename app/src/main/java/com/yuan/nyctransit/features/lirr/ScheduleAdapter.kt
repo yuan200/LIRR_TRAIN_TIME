@@ -28,7 +28,8 @@ class ScheduleAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 //        holder.itemView.train_name.text = stopTimeList[position].stopId
         val view = holder.itemView as ScheduleView
-        view.trainNameTV.text = collection[position].tripHeadSign
+        view.routeColor = collection[position].routeColor
+        view.tripHeadSignTV.text = collection[position].tripHeadSign
         view.scheduleTime.text = collection[position].arrivingTimeStr.toString()
         view.stopTV.text = collection[position].stopName
 
