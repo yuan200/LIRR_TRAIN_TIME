@@ -25,7 +25,7 @@ class ApplicationModule(private val application: AndroidApplication) {
     //todo this is duplicate with application context provide method
     @Provides @Singleton fun provideApplication(): Application = application
 
-    @Provides @Singleton fun provideLirrRepository(dataSource: NetworkLirrRepository): LirrFeedRepository = dataSource
+    @Provides @Singleton fun provideLirrRepository(dataSource: NetworkLirrRealTimeRepository): LirrRealTimeFeedRepository = dataSource
 
     @Provides @Named("apiMta") @Singleton fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()

@@ -4,7 +4,7 @@ import android.content.Context
 import com.yuan.nyctransit.core.exception.Failure
 import com.yuan.nyctransit.core.functional.Either
 
-interface LirrFeedRepository {
+interface LirrRealTimeFeedRepository {
     fun lirrFeed(
         context: Context,
         stopId: String

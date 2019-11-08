@@ -4,27 +4,27 @@ import android.content.Context
 import com.yuan.nyctransit.core.exception.Failure
 import com.yuan.nyctransit.core.functional.Either
 import com.yuan.nyctransit.core.platform.NetworkHandler
-import com.yuan.nyctransit.extenstion.writeResponseBodyToDisk
+import com.yuan.nyctransit.extenstion.responseBodyToStopTimeUpdateView
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import retrofit2.Call
 import timber.log.Timber
 import javax.inject.Inject
 
-class NetworkLirrRepository
+class NetworkLirrRealTimeRepository
 @Inject constructor(
     private val networkHandler: NetworkHandler,
     private val service: LirrService
-) : LirrFeedRepository {
+) : LirrRealTimeFeedRepository {
 
     override fun lirrFeed(
         context: Context,
         stopId: String
     ): Either<Failure, MutableList<StopTimeUpdateView>> {
-        Timber.d("calling lirrFeed...")
+        Timber.d("calling lirrRealTimeFeed...")
         return when (networkHandler.isConnected) {
             true -> request(
-                service.lirrFeed(), { it.writeResponseBodyToDisk(context, stopId) },
+                service.lirrFeed(), { it.responseBodyToStopTimeUpdateView(context, stopId) },
                 ResponseBody.create(
                     MediaType.parse("Jason"), toString()
                 )

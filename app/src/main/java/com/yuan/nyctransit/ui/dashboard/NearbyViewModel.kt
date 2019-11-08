@@ -7,17 +7,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.core.database.Stop
-import com.yuan.nyctransit.features.lirr.GetLirrFeed
+import com.yuan.nyctransit.features.lirr.GetLirrRealTimeFeed
 import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
 import com.yuan.nyctransit.utils.getDistance
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class NearbyViewModel
-@Inject constructor(application: Application, val lirrFeed: GetLirrFeed) :
+@Inject constructor(application: Application, val lirrRealTimeFeed: GetLirrRealTimeFeed) :
     AndroidViewModel(application) {
 
     private val lirrGtfsBase: LirrGtfsBase by lazy {
@@ -40,9 +37,9 @@ class NearbyViewModel
 
         MutableLiveData<MutableList<StopTimeUpdateView>>().apply {
             //todo hardcode
-            lirrFeed.stopId = nearByStops().stopId
+            lirrRealTimeFeed.stopId = nearByStops().stopId
             //todo viewmodeScope is use main thread, how to avoid useing CoroutineScope(Dispatchers.IO)
-            lirrFeed(CoroutineScope(Dispatchers.IO), true) {
+            lirrRealTimeFeed(CoroutineScope(Dispatchers.IO), true) {
                 if (it.isRight) value =
                     it.either(
                         {},
@@ -54,13 +51,7 @@ class NearbyViewModel
 
     fun getFeed() = _feed
 
-    //todo change to private
-    //todo change it to fun?
-    //todo maybe lazy is bad here
-    /**
-     * todo for Lirr station just return the nearest one station
-     */
-    private fun nearByStops(): Stop {
+    private fun nearByStops() = runBlocking{
         //todo viewModelSclpe ?
         var stops: List<Stop> = emptyList()
         val allStops = CoroutineScope(Dispatchers.IO).async { lirrGtfsBase.stopDao().allStops() }
@@ -68,8 +59,7 @@ class NearbyViewModel
             stops = allStops.await()
         }
 
-        //todo change this
-        Thread.sleep(3000)
+        stopsJob.join()
 
         val stopDistanceMap = HashMap<Stop, Double>().also { h ->
             stops.forEach {
@@ -91,9 +81,9 @@ class NearbyViewModel
         }
         //todo this is ugly might have bugs
         if (sortStops.isEmpty())
-            return Stop.empty()
+            Stop.empty()
         else
-            return sortStops[0].first
+            sortStops[0].first
 
     }
 

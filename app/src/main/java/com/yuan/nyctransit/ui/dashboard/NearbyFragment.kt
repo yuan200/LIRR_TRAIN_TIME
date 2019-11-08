@@ -56,31 +56,7 @@ class NearbyFragment : Fragment() {
             ViewModelProviders.of(this,nearbyViewModelFactory)[NearbyViewModel::class.java]
 
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!).apply {
-            lastLocation.addOnSuccessListener {
-                currentLocation = it ?: Location("empty").apply {
-                    latitude = 0.0
-                    longitude = 0.0
-                }
 
-                nearbyViewModel.currentLocation.value = currentLocation
-
-                if (!alreadySubscribeFeed) {
-                    alreadySubscribeFeed = true
-                    nearbyViewModel.currentLocation.observe(this@NearbyFragment, Observer {
-                        currentLocation = it
-                    })
-
-                    nearbyViewModel.getFeed().observe(this@NearbyFragment, Observer {
-                        viewAdapter.collection = it
-                    })
-                }
-
-                val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
-                mMap.addMarker(MarkerOptions().position(latlng).title("Maker in Sydney"))
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 12f))
-            }
-        }
 
 
 
@@ -109,7 +85,31 @@ class NearbyFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!).apply {
+            lastLocation.addOnSuccessListener {
+                currentLocation = it ?: Location("empty").apply {
+                    latitude = 0.0
+                    longitude = 0.0
+                }
 
+                nearbyViewModel.currentLocation.value = currentLocation
+
+                if (!alreadySubscribeFeed) {
+                    alreadySubscribeFeed = true
+                    nearbyViewModel.currentLocation.observe(this@NearbyFragment, Observer {
+                        currentLocation = it
+                    })
+
+                    nearbyViewModel.getFeed().observe(this@NearbyFragment, Observer {
+                        viewAdapter.collection = it
+                    })
+                }
+
+                val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
+                mMap.addMarker(MarkerOptions().position(latlng).title("Maker in Sydney"))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 12f))
+            }
+        }
 
     }
 }
