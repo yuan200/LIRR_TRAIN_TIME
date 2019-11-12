@@ -19,6 +19,13 @@
         app:behavior_hideable="false"
         app:behavior_peekHeight="200dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        <TextView
+            android:id="@+id/address_search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:text="place holder"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/schedule_recycler_view"
             android:layout_width="match_parent"

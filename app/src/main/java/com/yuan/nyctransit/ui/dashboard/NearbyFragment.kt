@@ -1,10 +1,12 @@
 package com.yuan.nyctransit.ui.dashboard
 
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -50,6 +52,8 @@ class NearbyFragment : Fragment() {
 
     private lateinit var viewManager: RecyclerView.LayoutManager
 
+    private lateinit var addressSearchBar: TextView
+
     @Inject lateinit var nearbyViewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreateView(
@@ -60,6 +64,8 @@ class NearbyFragment : Fragment() {
         AndroidSupportInjection.inject(this)
 
         val root = inflater.inflate(R.layout.fragment_nearby, container, false)
+
+        addressSearchBar = root.findViewById(R.id.address_search_bar)
 
         shimmerViewContainer = root.findViewById(R.id.shimmer_view_container)
 
@@ -108,6 +114,10 @@ class NearbyFragment : Fragment() {
                     latitude = 0.0
                     longitude = 0.0
                 }
+
+                val geocoder = Geocoder(context)
+                val geoResult = geocoder.getFromLocation(currentLocation.latitude, currentLocation.longitude, 1)
+                addressSearchBar.text = geoResult[0].getAddressLine(0)
 
                 nearbyViewModel.currentLocation.value = currentLocation
 
