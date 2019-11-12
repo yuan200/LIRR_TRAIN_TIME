@@ -8,10 +8,10 @@ import com.yuan.nyctransit.core.database.*
 import timber.log.Timber
 import java.util.*
 
-@Entity(tableName = "gtfs_overview", primaryKeys = ["agency_id", "feed_version"])
+@Entity(tableName = "gtfs_overview")
 @JsonClass(generateAdapter = true)
 data class LirrGtfs(
-    @ColumnInfo("agency_id") @Json(name = "agency_id") var agencyId: String,
+    @PrimaryKey @ColumnInfo("agency_id") @Json(name = "agency_id") var agencyId: String,
     @ColumnInfo("feed_version") @Json(name = "feed_version") var feedVersion: String,
     var revised: Date,
     @Ignore var gtfs: Gtfs? //todo is nullable ok here

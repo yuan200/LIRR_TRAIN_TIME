@@ -39,6 +39,12 @@ android {
             resValue 'string', "google_map_api_key", NycTransitApp_Apikey
         }
     }
+
+    signingConfigs {
+        debug {
+            storeFile file("../debug.keystore")
+        }
+    }
 }
 
 dependencies {
