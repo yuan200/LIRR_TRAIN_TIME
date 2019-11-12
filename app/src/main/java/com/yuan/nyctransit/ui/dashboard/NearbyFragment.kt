@@ -137,6 +137,12 @@ class NearbyFragment : Fragment() {
                 val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
                 mMap.addMarker(MarkerOptions().position(latlng).title("Maker in Sydney"))
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 12f))
+                mMap.setOnCameraIdleListener {
+                    val middleLatLng = mMap.cameraPosition.target
+                    val geocoder = Geocoder(context)
+                    val geoResult = geocoder.getFromLocation(middleLatLng.latitude, middleLatLng.longitude, 1)
+                    addressSearchBar.text = geoResult[0].getAddressLine(0)
+                }
             }
         }
 
