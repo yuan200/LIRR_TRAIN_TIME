@@ -7,4 +7,5 @@
     <color name="scheduleViewPrimaryLightColor">#ffffff</color>
     <color name="scheduleViewPrimaryDarkColor">#c7c7c7</color>
     <color name="scheduleViewPrimaryTextColor">#000000</color>
+    <color name="shimmerColor">#dddddd</color>
 </resources>

@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -19,10 +21,10 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.yuan.nyctransit.MainActivity
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
-import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -40,6 +42,10 @@ class NearbyFragment : Fragment() {
 
     private lateinit var viewAdapter: ScheduleAdapter
 
+    private lateinit var shimmerViewContainer: CardView
+
+    private lateinit var shimmerView: ShimmerFrameLayout
+
     private var alreadySubscribeFeed = false
 
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -52,32 +58,36 @@ class NearbyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         AndroidSupportInjection.inject(this)
+
+        val root = inflater.inflate(R.layout.fragment_nearby, container, false)
+
+        shimmerViewContainer = root.findViewById(R.id.shimmer_view_container)
+
+        shimmerView = root.findViewById(R.id.shimmer_view)
+
+        (activity as MainActivity).navView.post {
+            val bottomNavHeight = (activity as MainActivity).navView.measuredHeight
+            val layoutParam = (shimmerView.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                bottomMargin = bottomNavHeight
+            }
+            shimmerView.layoutParams = layoutParam
+        }
+
+
         //todo study clean architecure simple's extension usage
         nearbyViewModel =
             ViewModelProviders.of(this,nearbyViewModelFactory)[NearbyViewModel::class.java]
 
-
-
-
-
-
-        val root = inflater.inflate(R.layout.fragment_map, container, false)
         val supportMapFragment = childFragmentManager.findFragmentById(R.id.map_fragment)
                 as SupportMapFragment
         supportMapFragment.getMapAsync(OnMapReadyCallback {
             mMap = it
-
-
         })
 
         viewManager = LinearLayoutManager(context)
 
         val adapterList = LirrFeed.stopTimeUpdateViewList
         viewAdapter = ScheduleAdapter()
-        val placeHolderList = mutableListOf(StopTimeUpdateView.placeHolder(),
-            StopTimeUpdateView.placeHolder(),
-            StopTimeUpdateView.placeHolder())
-        viewAdapter.collection = placeHolderList
 
         recyclerView = root.findViewById<RecyclerView>(R.id.schedule_recycler_view).apply {
             setHasFixedSize(true)
@@ -89,6 +99,8 @@ class NearbyFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        shimmerView.startShimmer()
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!).apply {
             lastLocation.addOnSuccessListener {
@@ -106,6 +118,8 @@ class NearbyFragment : Fragment() {
                     })
 
                     nearbyViewModel.getFeed().observe(this@NearbyFragment, Observer {
+                        shimmerView.stopShimmer()
+                        shimmerViewContainer.visibility = View.GONE
                         viewAdapter.collection = it
                     })
                 }

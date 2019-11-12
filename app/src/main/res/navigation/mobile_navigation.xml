@@ -15,7 +15,7 @@
         android:id="@+id/navigation_nearby"
         android:name="com.yuan.nyctransit.ui.dashboard.NearbyFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_nearby" />
 
     <fragment
         android:id="@+id/navigation_notifications"
