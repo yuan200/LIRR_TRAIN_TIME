@@ -115,10 +115,6 @@ class NearbyFragment : Fragment() {
                     longitude = 0.0
                 }
 
-                val geocoder = Geocoder(context)
-                val geoResult = geocoder.getFromLocation(currentLocation.latitude, currentLocation.longitude, 1)
-                addressSearchBar.text = geoResult[0].getAddressLine(0)
-
                 nearbyViewModel.currentLocation.value = currentLocation
 
                 if (!alreadySubscribeFeed) {
@@ -127,7 +123,7 @@ class NearbyFragment : Fragment() {
                         currentLocation = it
                     })
 
-                    nearbyViewModel.getFeed().observe(this@NearbyFragment, Observer {
+                    nearbyViewModel.feed3.observe(this@NearbyFragment, Observer {
                         shimmerView.stopShimmer()
                         shimmerViewContainer.visibility = View.GONE
                         viewAdapter.collection = it
@@ -136,9 +132,13 @@ class NearbyFragment : Fragment() {
 
                 val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
                 mMap.addMarker(MarkerOptions().position(latlng).title("Maker in Sydney"))
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 12f))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15f))
                 mMap.setOnCameraIdleListener {
                     val middleLatLng = mMap.cameraPosition.target
+                    nearbyViewModel.currentLocation.value = Location("what provider").apply {
+                        latitude = middleLatLng.latitude
+                        longitude = middleLatLng.longitude
+                    }
                     val geocoder = Geocoder(context)
                     val geoResult = geocoder.getFromLocation(middleLatLng.latitude, middleLatLng.longitude, 1)
                     addressSearchBar.text = geoResult[0].getAddressLine(0)
