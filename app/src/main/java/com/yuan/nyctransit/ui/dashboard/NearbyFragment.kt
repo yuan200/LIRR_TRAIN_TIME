@@ -1,5 +1,8 @@
 package com.yuan.nyctransit.ui.dashboard
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -9,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +26,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yuan.nyctransit.MainActivity
@@ -150,7 +156,11 @@ class NearbyFragment : Fragment() {
                 }
 
                 val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
-                mMap.addMarker(MarkerOptions().position(latlng).title("Maker in Sydney"))
+                MarkerOptions()
+                mMap.addMarker(MarkerOptions()
+                    .icon(bitmapDescriptorFromVector(context as Context, R.drawable.circle_drawable))
+                    .position(latlng)
+                    .title("You are here"))
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15f))
                 mMap.setOnCameraIdleListener {
                     val middleLatLng = mMap.cameraPosition.target
@@ -181,5 +191,14 @@ class NearbyFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun  bitmapDescriptorFromVector(context: Context, vectorResId:Int): BitmapDescriptor {
+        var vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable!!.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        var bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        var canvas =  Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }
