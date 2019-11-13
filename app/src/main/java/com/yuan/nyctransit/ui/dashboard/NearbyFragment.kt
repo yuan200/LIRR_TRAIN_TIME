@@ -27,7 +27,9 @@ import com.yuan.nyctransit.MainActivity
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
+import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
 import dagger.android.support.AndroidSupportInjection
+import timber.log.Timber
 import javax.inject.Inject
 
 class NearbyFragment : Fragment() {
@@ -54,6 +56,8 @@ class NearbyFragment : Fragment() {
 
     private lateinit var addressSearchBar: TextView
 
+    private lateinit var fetchIndicatorView: View
+
     @Inject lateinit var nearbyViewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreateView(
@@ -66,6 +70,8 @@ class NearbyFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_nearby, container, false)
 
         addressSearchBar = root.findViewById(R.id.address_search_bar)
+
+        fetchIndicatorView = root.findViewById(R.id.fetching_indicator_view)
 
         shimmerViewContainer = root.findViewById(R.id.shimmer_view_container)
 
@@ -123,10 +129,10 @@ class NearbyFragment : Fragment() {
                         currentLocation = it
                     })
 
-                    nearbyViewModel.feed3.observe(this@NearbyFragment, Observer {
+                    nearbyViewModel.feed.observe(this@NearbyFragment, Observer {
                         shimmerView.stopShimmer()
                         shimmerViewContainer.visibility = View.GONE
-                        viewAdapter.collection = it
+                        viewAdapter.collection = it?: mutableListOf(StopTimeUpdateView.placeHolder())
                     })
                 }
 
@@ -139,10 +145,26 @@ class NearbyFragment : Fragment() {
                         latitude = middleLatLng.latitude
                         longitude = middleLatLng.longitude
                     }
+                    nearbyViewModel.refreshSchedualView()
                     val geocoder = Geocoder(context)
                     val geoResult = geocoder.getFromLocation(middleLatLng.latitude, middleLatLng.longitude, 1)
                     addressSearchBar.text = geoResult[0].getAddressLine(0)
+                    Timber.i("camera is idle")
+                    nearbyViewModel.fetchingState.value = false
                 }
+
+                mMap.setOnCameraMoveStartedListener {
+                    Timber.i("camera is moving")
+                    nearbyViewModel.fetchingState.value = true
+                }
+
+
+                nearbyViewModel.fetchingState.observe(this@NearbyFragment, Observer {
+                    when(it) {
+                        true -> fetchIndicatorView.visibility = View.VISIBLE
+                        false -> fetchIndicatorView.visibility = View.GONE
+                    }
+                })
             }
         }
 

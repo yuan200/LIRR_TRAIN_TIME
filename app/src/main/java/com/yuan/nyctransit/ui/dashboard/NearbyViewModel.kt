@@ -33,7 +33,13 @@ class NearbyViewModel
         }
     }
 
-    private val _feed: MutableLiveData<MutableList<StopTimeUpdateView>> by lazy {
+    val fetchingState: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>().apply {
+            value = false
+        }
+    }
+
+    val feed: MutableLiveData<MutableList<StopTimeUpdateView>> by lazy {
 
         MutableLiveData<MutableList<StopTimeUpdateView>>().apply {
             //todo hardcode
@@ -49,22 +55,26 @@ class NearbyViewModel
 
     }
 
-    val feed3 = getFeed2()
+    fun refreshSchedualView() {
+        getFeed2()
+    }
 
-    fun getFeed2() =
-        MutableLiveData<MutableList<StopTimeUpdateView>>().apply {
-            //todo hardcode
-            lirrRealTimeFeed.stopId = nearByStops().stopId
-            //todo viewmodeScope is use main thread, how to avoid useing CoroutineScope(Dispatchers.IO)
-            lirrRealTimeFeed(CoroutineScope(Dispatchers.IO), true) {
-                if (it.isRight) value =
-                    it.either(
-                        {},
-                        { stopTimeUpdateViewList -> stopTimeUpdateViewList }) as MutableList<StopTimeUpdateView>
+    fun getFeed2() {
+        //todo hardcode
+        lirrRealTimeFeed.stopId = nearByStops().stopId
+        //todo viewmodeScope is use main thread, how to avoid useing CoroutineScope(Dispatchers.IO)
+        lirrRealTimeFeed(CoroutineScope(Dispatchers.IO), true) {
+            if (it.isRight) {
+                feed.value = it.either(
+                    {},
+                    {stoptimeUpdateViewList -> stoptimeUpdateViewList}
+                ) as MutableList<StopTimeUpdateView>
             }
         }
+    }
 
-    fun getFeed() = _feed
+    fun getFeedData() = feed
+
 
     private fun nearByStops() = runBlocking{
         //todo viewModelSclpe ?
