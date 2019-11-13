@@ -13,8 +13,12 @@ import com.jakewharton.rxbinding3.widget.textChangeEvents
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.ui.textView.RoundedBgTextView
 import com.yuan.nyctransit.ui.textView.ScheduledTextView
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class ScheduleView : ConstraintLayout {
 
@@ -30,16 +34,16 @@ class ScheduleView : ConstraintLayout {
 
     private val rightMargin = 10
 
-    private val composeDisposable  = CompositeDisposable()
+    private val composeDisposable = CompositeDisposable()
 
 
     var tripHeadSignTV: RoundedBgTextView
 
     var scheduleTime: ScheduledTextView
 
-    var realTimeUpdateTV: TextView
+    private var realTimeUpdateTV: TextView
 
-    var minTV: TextView
+    private var minTV: TextView
 
     var stopTV: TextView
 
@@ -154,10 +158,22 @@ class ScheduleView : ConstraintLayout {
         )
 
         set.connect(scheduleTime.id, ConstraintSet.TOP, tripHeadSignTV.id, ConstraintSet.BOTTOM, 10)
-        set.connect(scheduleTime.id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, rightMargin)
+        set.connect(
+            scheduleTime.id,
+            ConstraintSet.LEFT,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.LEFT,
+            rightMargin
+        )
 
         set.connect(stopTV.id, ConstraintSet.TOP, scheduleTime.id, ConstraintSet.BOTTOM, 10)
-        set.connect(stopTV.id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, rightMargin)
+        set.connect(
+            stopTV.id,
+            ConstraintSet.LEFT,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.LEFT,
+            rightMargin
+        )
 
 
         set.connect(minTV.id, ConstraintSet.TOP, realTimeUpdateTV.id, ConstraintSet.BOTTOM)
@@ -169,6 +185,8 @@ class ScheduleView : ConstraintLayout {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         val disposable = realTimeUpdateTV.textChangeEvents()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 Consumer {
                     if (it.text.toString().toInt() <= 1) minTV.text = "minute"
@@ -182,6 +200,18 @@ class ScheduleView : ConstraintLayout {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         composeDisposable.clear()
+    }
+
+    fun setRealTimeMuinutes(minute: String) {
+        realTimeUpdateTV.text = minute
+        val minuteObserver = Observable.interval(1, TimeUnit.MINUTES)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(Consumer {
+                val minuteNum = minute.toInt() - it
+                realTimeUpdateTV.text = minuteNum.toString()
+            })
+        composeDisposable.add(minuteObserver)
     }
 
 }

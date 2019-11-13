@@ -36,7 +36,7 @@ class ScheduleAdapter :
         var now = LocalDateTime.now()
         var duration = Duration.between(now, collection[position].arrivingTime)
         Timber.i("duration: ${duration.toString()}")
-        view.realTimeUpdateTV.text = duration.toMinutes().toString()
+        view.setRealTimeMuinutes(duration.toMinutes().toString())
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

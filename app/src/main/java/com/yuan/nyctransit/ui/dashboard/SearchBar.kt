@@ -1,6 +1,7 @@
 package com.yuan.nyctransit.ui.dashboard
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageButton
@@ -18,29 +19,25 @@ class SearchBar :ConstraintLayout {
         defStyleAttr: Int = 0
     ) : super(context, attrs, defStyleAttr)
 
-    var locateCurrentLocation: ImageButton
+    var locateCurrentLocation = ImageButton(context).apply {
+        id = View.generateViewId()
+        setBackgroundColor(Color.TRANSPARENT)
+        setImageResource(R.drawable.ic_location_searching_24px)
+        addView(this)
+    }
 
-    var descriptor: TextView
+    var descriptor = TextView(context).apply {
+        id = View.generateViewId()
+        text = "Options near"
+        addView(this)
+    }
 
-    var searchTextView: TextView
+    var searchTextView = TextView(context).apply {
+        id = View.generateViewId()
+        addView(this)
+    }
 
     init {
-        locateCurrentLocation = ImageButton(context).apply {
-            id = View.generateViewId()
-            setImageResource(R.drawable.ic_location_searching_24px)
-        }
-        addView(locateCurrentLocation)
-
-        descriptor = TextView(context).apply {
-            id = View.generateViewId()
-            text = "Options near"
-        }
-        addView(descriptor)
-
-        searchTextView = TextView(context).apply {
-            id = View.generateViewId()
-        }
-        addView(searchTextView)
 
         val set = ConstraintSet().also {
             it.clone(this)

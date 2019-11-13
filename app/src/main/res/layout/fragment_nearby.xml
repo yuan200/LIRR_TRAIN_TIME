@@ -26,16 +26,16 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="10dp"
             app:cardCornerRadius="3dp" >
 
             <com.yuan.nyctransit.ui.dashboard.SearchBar
                 android:id="@+id/address_search_bar"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorPrimary" />
         </androidx.cardview.widget.CardView>
@@ -75,7 +75,7 @@
     <FrameLayout
         android:id="@+id/fetching_indicator_view"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="150dp"
         android:layout_gravity="bottom"
         android:background="@color/cardview_shadow_start_color">
 

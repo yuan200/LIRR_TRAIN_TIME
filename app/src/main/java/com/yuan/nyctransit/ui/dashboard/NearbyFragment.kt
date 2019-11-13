@@ -76,7 +76,7 @@ class NearbyFragment : Fragment() {
         addressSearchBar = root.findViewById(R.id.address_search_bar)
 
         addressSearchBar.locateCurrentLocation.setOnClickListener {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latestLocation.latitude, latestLocation.longitude), 15f))
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latestLocation.latitude, latestLocation.longitude), 15f))
         }
 
         fetchIndicatorView = root.findViewById(R.id.fetching_indicator_view)
