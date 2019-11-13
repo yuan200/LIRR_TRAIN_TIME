@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.FrameLayout
+import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -29,7 +30,6 @@ import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
 import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
 import dagger.android.support.AndroidSupportInjection
-import timber.log.Timber
 import javax.inject.Inject
 
 class NearbyFragment : Fragment() {
@@ -41,6 +41,8 @@ class NearbyFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private lateinit var currentLocation: Location
+
+    private lateinit var latestLocation: Location
 
     private lateinit var recyclerView: RecyclerView
 
@@ -54,9 +56,11 @@ class NearbyFragment : Fragment() {
 
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    private lateinit var addressSearchBar: TextView
+    private lateinit var addressSearchBar: SearchBar
 
-    private lateinit var fetchIndicatorView: View
+    private lateinit var fetchIndicatorView: FrameLayout
+
+    private lateinit var goBackToCurrentLocation: ImageButton
 
     @Inject lateinit var nearbyViewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
@@ -70,6 +74,10 @@ class NearbyFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_nearby, container, false)
 
         addressSearchBar = root.findViewById(R.id.address_search_bar)
+
+        addressSearchBar.locateCurrentLocation.setOnClickListener {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latestLocation.latitude, latestLocation.longitude), 15f))
+        }
 
         fetchIndicatorView = root.findViewById(R.id.fetching_indicator_view)
 
@@ -121,6 +129,11 @@ class NearbyFragment : Fragment() {
                     longitude = 0.0
                 }
 
+                latestLocation = it ?: Location("empty").apply {
+                    latitude = 0.0
+                    longitude = 0.0
+                }
+
                 nearbyViewModel.currentLocation.value = currentLocation
 
                 if (!alreadySubscribeFeed) {
@@ -148,16 +161,16 @@ class NearbyFragment : Fragment() {
                     nearbyViewModel.refreshSchedualView()
                     val geocoder = Geocoder(context)
                     val geoResult = geocoder.getFromLocation(middleLatLng.latitude, middleLatLng.longitude, 1)
-                    addressSearchBar.text = geoResult[0].getAddressLine(0)
-                    Timber.i("camera is idle")
+                    val streeNum = geoResult[0].subThoroughfare?: ""
+                    val stree = geoResult[0].thoroughfare?: ""
+                    val displayAddress = streeNum + " " + stree
+                    addressSearchBar.setDisplayAddress(displayAddress)
                     nearbyViewModel.fetchingState.value = false
                 }
 
                 mMap.setOnCameraMoveStartedListener {
-                    Timber.i("camera is moving")
                     nearbyViewModel.fetchingState.value = true
                 }
-
 
                 nearbyViewModel.fetchingState.observe(this@NearbyFragment, Observer {
                     when(it) {
