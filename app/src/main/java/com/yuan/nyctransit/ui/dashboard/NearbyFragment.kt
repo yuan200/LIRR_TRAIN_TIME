@@ -3,6 +3,7 @@ package com.yuan.nyctransit.ui.dashboard
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -30,12 +31,13 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.yuan.nyctransit.MainActivity
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
 import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
 import dagger.android.support.AndroidSupportInjection
+import java.io.IOException
+import java.util.*
 import javax.inject.Inject
 
 class NearbyFragment : Fragment() {
@@ -81,8 +83,8 @@ class NearbyFragment : Fragment() {
 
         addressSearchBar = root.findViewById(R.id.address_search_bar)
 
-        addressSearchBar.locateCurrentLocation.setOnClickListener {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latestLocation.latitude, latestLocation.longitude), 15f))
+        addressSearchBar.myLocation.setOnClickListener {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latestLocation.latitude, latestLocation.longitude),16f))
         }
 
         fetchIndicatorView = root.findViewById(R.id.fetching_indicator_view)
@@ -91,13 +93,13 @@ class NearbyFragment : Fragment() {
 
         shimmerView = root.findViewById(R.id.shimmer_view)
 
-        (activity as MainActivity).navView.post {
-            val bottomNavHeight = (activity as MainActivity).navView.measuredHeight
-            val layoutParam = (shimmerView.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                bottomMargin = bottomNavHeight
-            }
-            shimmerView.layoutParams = layoutParam
-        }
+//        (activity as MainActivity).navView.post {
+//            val bottomNavHeight = (activity as MainActivity).navView.measuredHeight
+//            val layoutParam = (shimmerView.layoutParams as ViewGroup.MarginLayoutParams).apply {
+//                bottomMargin = bottomNavHeight
+//            }
+//            shimmerView.layoutParams = layoutParam
+//        }
 
 
         //todo study clean architecure simple's extension usage
@@ -156,12 +158,12 @@ class NearbyFragment : Fragment() {
                 }
 
                 val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
-                MarkerOptions()
+                //todo sometime multiple marker appears
                 mMap.addMarker(MarkerOptions()
                     .icon(bitmapDescriptorFromVector(context as Context, R.drawable.circle_drawable))
                     .position(latlng)
                     .title("You are here"))
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15f))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 16f))
                 mMap.setOnCameraIdleListener {
                     val middleLatLng = mMap.cameraPosition.target
                     nearbyViewModel.currentLocation.value = Location("what provider").apply {
@@ -170,11 +172,18 @@ class NearbyFragment : Fragment() {
                     }
                     nearbyViewModel.refreshSchedualView()
                     val geocoder = Geocoder(context)
-                    val geoResult = geocoder.getFromLocation(middleLatLng.latitude, middleLatLng.longitude, 1)
-                    val streeNum = geoResult[0].subThoroughfare?: ""
-                    val stree = geoResult[0].thoroughfare?: ""
-                    val displayAddress = streeNum + " " + stree
-                    addressSearchBar.setDisplayAddress(displayAddress)
+                    var geoResult: List<Address>
+                    try {
+                        geoResult = geocoder.getFromLocation(middleLatLng.latitude, middleLatLng.longitude, 1)
+                    } catch (e: IOException) {
+                        geoResult = listOf(Address(Locale.US))
+                    }
+                    if (geoResult.isNotEmpty()) {
+                        var streeNum = geoResult[0].subThoroughfare?: ""
+                        var stree = geoResult[0].thoroughfare?: ""
+                        val displayAddress = streeNum + " " + stree
+                        addressSearchBar.setDisplayAddress(displayAddress)
+                    }
                     nearbyViewModel.fetchingState.value = false
                 }
 

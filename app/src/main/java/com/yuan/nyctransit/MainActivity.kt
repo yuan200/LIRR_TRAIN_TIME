@@ -1,9 +1,8 @@
 package com.yuan.nyctransit
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yuan.nyctransit.features.lirr.LirrViewModel
 import com.yuan.nyctransit.features.lirr.LirrViewModelFactory
@@ -19,8 +18,9 @@ class MainActivity : PermissionsActivity(){
         setContentView(R.layout.activity_main)
 
         navView = findViewById(R.id.bottom_nav_view)
-        val navController = findNavController(R.id.nav_host_fragment)
-        navView.setupWithNavController(navController)
+        navView.visibility = View.GONE
+//        val navController = findNavController(R.id.nav_host_fragment)
+//        navView.setupWithNavController(navController)
 
         model = ViewModelProviders.of(this, LirrViewModelFactory(application))[LirrViewModel::class.java]
 

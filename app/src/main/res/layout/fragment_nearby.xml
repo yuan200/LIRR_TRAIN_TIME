@@ -11,11 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageView
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/circle_drawable"/>
+        android:translationY="-7dp"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:src="@drawable/circle_drawable" />
+    </FrameLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,9 +36,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
             android:layout_marginTop="10dp"
-            app:cardCornerRadius="3dp" >
+            android:layout_marginRight="40dp"
+            app:cardCornerRadius="3dp">
 
             <com.yuan.nyctransit.ui.dashboard.SearchBar
                 android:id="@+id/address_search_bar"

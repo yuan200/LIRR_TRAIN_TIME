@@ -19,7 +19,7 @@ class SearchBar :ConstraintLayout {
         defStyleAttr: Int = 0
     ) : super(context, attrs, defStyleAttr)
 
-    var locateCurrentLocation = ImageButton(context).apply {
+    var myLocation = ImageButton(context).apply {
         id = View.generateViewId()
         setBackgroundColor(Color.TRANSPARENT)
         setImageResource(R.drawable.ic_location_searching_24px)
@@ -43,9 +43,10 @@ class SearchBar :ConstraintLayout {
             it.clone(this)
         }
 
-        set.connect(descriptor.id, ConstraintSet.LEFT, locateCurrentLocation.id, ConstraintSet.RIGHT)
+        set.connect(myLocation.id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT,20)
+        set.connect(descriptor.id, ConstraintSet.LEFT, myLocation.id, ConstraintSet.RIGHT)
 
-        set.connect(searchTextView.id, ConstraintSet.LEFT, locateCurrentLocation.id, ConstraintSet.RIGHT)
+        set.connect(searchTextView.id, ConstraintSet.LEFT, myLocation.id, ConstraintSet.RIGHT)
         set.connect(searchTextView.id, ConstraintSet.TOP, descriptor.id, ConstraintSet.BOTTOM)
 
         set.applyTo(this)
