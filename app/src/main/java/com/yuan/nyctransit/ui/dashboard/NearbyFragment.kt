@@ -14,6 +14,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +33,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yuan.nyctransit.R
+import com.yuan.nyctransit.databinding.FragmentNearbyBinding
 import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
 import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
@@ -42,15 +44,17 @@ import javax.inject.Inject
 
 class NearbyFragment : Fragment() {
 
-    private lateinit var nearbyViewModel: NearbyViewModel
+    private val nearbyViewModel: NearbyViewModel by lazy {
+        ViewModelProviders.of(this, nearbyViewModelFactory)[NearbyViewModel::class.java]
+    }
 
     private lateinit var mMap: GoogleMap
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private lateinit var currentLocation: Location
+    private lateinit var currentMapLocation: Location
 
-    private lateinit var latestLocation: Location
+    private lateinit var currentUserLocation: Location
 
     private lateinit var recyclerView: RecyclerView
 
@@ -64,7 +68,7 @@ class NearbyFragment : Fragment() {
 
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    private lateinit var addressSearchBar: SearchBar
+//    private lateinit var addressSearchBar: SearchBar
 
     private lateinit var fetchIndicatorView: FrameLayout
 
@@ -79,12 +83,14 @@ class NearbyFragment : Fragment() {
     ): View? {
         AndroidSupportInjection.inject(this)
 
-        val root = inflater.inflate(R.layout.fragment_nearby, container, false)
+        val binding = DataBindingUtil.inflate<FragmentNearbyBinding>(inflater, R.layout.fragment_nearby, container,false)
+        binding.lifecycleOwner = this
+        binding.viewModel = nearbyViewModel
+        val root = binding.root
+//        addressSearchBar = root.findViewById(R.id.address_search_bar)
 
-        addressSearchBar = root.findViewById(R.id.address_search_bar)
-
-        addressSearchBar.myLocation.setOnClickListener {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latestLocation.latitude, latestLocation.longitude),16f))
+        root.findViewById<ImageButton>(R.id.searchButton).setOnClickListener {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(currentUserLocation.latitude, currentUserLocation.longitude),16f))
         }
 
         fetchIndicatorView = root.findViewById(R.id.fetching_indicator_view)
@@ -103,8 +109,8 @@ class NearbyFragment : Fragment() {
 
 
         //todo study clean architecure simple's extension usage
-        nearbyViewModel =
-            ViewModelProviders.of(this,nearbyViewModelFactory)[NearbyViewModel::class.java]
+//        nearbyViewModel =
+//            ViewModelProviders.of(this,nearbyViewModelFactory)[NearbyViewModel::class.java]
 
         val supportMapFragment = childFragmentManager.findFragmentById(R.id.map_fragment)
                 as SupportMapFragment
@@ -132,22 +138,22 @@ class NearbyFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!).apply {
             lastLocation.addOnSuccessListener {
-                currentLocation = it ?: Location("empty").apply {
+                currentMapLocation = it ?: Location("empty").apply {
                     latitude = 0.0
                     longitude = 0.0
                 }
 
-                latestLocation = it ?: Location("empty").apply {
+                currentUserLocation = it ?: Location("empty").apply {
                     latitude = 0.0
                     longitude = 0.0
                 }
 
-                nearbyViewModel.currentLocation.value = currentLocation
+                nearbyViewModel.currentLocation.value = currentMapLocation
 
                 if (!alreadySubscribeFeed) {
                     alreadySubscribeFeed = true
                     nearbyViewModel.currentLocation.observe(this@NearbyFragment, Observer {
-                        currentLocation = it
+                        currentMapLocation = it
                     })
 
                     nearbyViewModel.feed.observe(this@NearbyFragment, Observer {
@@ -157,7 +163,7 @@ class NearbyFragment : Fragment() {
                     })
                 }
 
-                val latlng = LatLng(currentLocation.latitude, currentLocation.longitude)
+                val latlng = LatLng(currentMapLocation.latitude, currentMapLocation.longitude)
                 //todo sometime multiple marker appears
                 mMap.addMarker(MarkerOptions()
                     .icon(bitmapDescriptorFromVector(context as Context, R.drawable.circle_drawable))
@@ -182,7 +188,7 @@ class NearbyFragment : Fragment() {
                         var streeNum = geoResult[0].subThoroughfare?: ""
                         var stree = geoResult[0].thoroughfare?: ""
                         val displayAddress = streeNum + " " + stree
-                        addressSearchBar.setDisplayAddress(displayAddress)
+                        nearbyViewModel.displayAddress.value = displayAddress
                     }
                     nearbyViewModel.fetchingState.value = false
                 }

@@ -24,6 +24,14 @@ class NearbyViewModel
     private val _text = MutableLiveData<String>().apply {
         value = "This is dashboard Fragment"
     }
+
+    private val _displayAddress: MutableLiveData<String> by lazy {
+        MutableLiveData<String>().apply {
+            "empty display address"
+        }
+    }
+
+    val displayAddress = _displayAddress
     val text: LiveData<String> = _text
 
     val currentLocation = MutableLiveData<Location>().apply {

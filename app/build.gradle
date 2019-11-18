@@ -45,6 +45,10 @@ android {
             storeFile file("../debug.keystore")
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
