@@ -56,7 +56,8 @@
 <!--                    android:background="@color/colorPrimary" />-->
                 <include
                     layout="@layout/searchbar"
-                    bind:displayAddress="@{viewModel.displayAddress}"/>
+                    bind:displayAddress="@{viewModel.displayAddress}"
+                    bind:showNearByOptions="@{viewModel.isMarkerOnCurrentLocation}"/>
 
             </androidx.cardview.widget.CardView>
 

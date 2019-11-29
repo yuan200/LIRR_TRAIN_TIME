@@ -31,6 +31,12 @@ class NearbyViewModel
         }
     }
 
+    private val _isMarkerOnCurrentLocation: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>().apply {
+            true
+        }
+    }
+
     val displayAddress = _displayAddress
     val text: LiveData<String> = _text
 
@@ -62,6 +68,8 @@ class NearbyViewModel
         }
 
     }
+
+    val isMarkerOnCurrentLocation = _isMarkerOnCurrentLocation
 
     fun refreshSchedualView() {
         getFeed2()

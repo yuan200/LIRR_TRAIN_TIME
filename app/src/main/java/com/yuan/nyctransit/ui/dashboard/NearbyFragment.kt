@@ -91,6 +91,7 @@ class NearbyFragment : Fragment() {
 
         root.findViewById<ImageButton>(R.id.searchButton).setOnClickListener {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(currentUserLocation.latitude, currentUserLocation.longitude),16f))
+            nearbyViewModel.isMarkerOnCurrentLocation.value = true
         }
 
         fetchIndicatorView = root.findViewById(R.id.fetching_indicator_view)
@@ -195,6 +196,7 @@ class NearbyFragment : Fragment() {
 
                 mMap.setOnCameraMoveStartedListener {
                     nearbyViewModel.fetchingState.value = true
+                    nearbyViewModel.isMarkerOnCurrentLocation.value = false
                 }
 
                 nearbyViewModel.fetchingState.observe(this@NearbyFragment, Observer {

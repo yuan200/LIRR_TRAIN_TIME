@@ -4,9 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="displayAddress"
             type="String" />
+        <variable
+            name="showNearByOptions"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Options near"
+            android:visibility="@{showNearByOptions ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@+id/searchButton"
             tools:layout_editor_absoluteY="16dp" />
 
@@ -35,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{displayAddress}"
+            android:visibility="@{showNearByOptions ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@+id/searchButton"
             app:layout_constraintTop_toBottomOf="@+id/description_textview" />
     </androidx.constraintlayout.widget.ConstraintLayout>
