@@ -38,6 +38,7 @@ import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
 import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
 import dagger.android.support.AndroidSupportInjection
+import timber.log.Timber
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
@@ -197,6 +198,7 @@ class NearbyFragment : Fragment() {
                 mMap.setOnCameraMoveStartedListener {
                     nearbyViewModel.fetchingState.value = true
                     nearbyViewModel.isMarkerOnCurrentLocation.value = false
+                    Timber.i("camera was moved")
                 }
 
                 nearbyViewModel.fetchingState.observe(this@NearbyFragment, Observer {

@@ -15,14 +15,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="45dp"
+        android:background="@{showNearByOptions ? @color/searchBarPrimaryColor : @color/searchBarSecondaryColor}">
 
         <ImageButton
             android:id="@+id/searchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/transparent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_search_black_24dp" />
 
         <TextView
@@ -31,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Options near"
+            android:textSize="12sp"
             android:visibility="@{showNearByOptions ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@+id/searchButton"
             tools:layout_editor_absoluteY="16dp" />
@@ -39,9 +44,27 @@
             android:id="@+id/address_display_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="@{displayAddress}"
+            android:textSize="16sp"
+            android:textColor="@color/textWhiteColor"
             android:visibility="@{showNearByOptions ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@+id/searchButton"
             app:layout_constraintTop_toBottomOf="@+id/description_textview" />
+
+        <TextView
+            android:id="@+id/search_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Where to?"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"
+            android:textColor="@color/textWhiteColor"
+            android:textSize="20sp"
+            android:visibility="@{showNearByOptions ? View.VISIBLE : View.GONE}"
+            app:layout_constraintStart_toEndOf="@+id/searchButton"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

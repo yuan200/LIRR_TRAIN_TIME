@@ -8,4 +8,7 @@
     <color name="scheduleViewPrimaryDarkColor">#c7c7c7</color>
     <color name="scheduleViewPrimaryTextColor">#000000</color>
     <color name="shimmerColor">#dddddd</color>
+    <color name="searchBarPrimaryColor">#2e7d32</color>
+    <color name="searchBarSecondaryColor">#8bc34a</color>
+    <color name="textWhiteColor">#D6F0E0</color>
 </resources>

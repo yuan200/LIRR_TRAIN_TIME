@@ -31,11 +31,7 @@ class NearbyViewModel
         }
     }
 
-    private val _isMarkerOnCurrentLocation: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>().apply {
-            true
-        }
-    }
+    private val _isMarkerOnCurrentLocation = MutableLiveData<Boolean>(true)
 
     val displayAddress = _displayAddress
     val text: LiveData<String> = _text

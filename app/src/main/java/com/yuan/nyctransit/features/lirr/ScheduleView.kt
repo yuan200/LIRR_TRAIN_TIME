@@ -13,6 +13,7 @@ import com.jakewharton.rxbinding3.widget.textChangeEvents
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.ui.textView.RoundedBgTextView
 import com.yuan.nyctransit.ui.textView.ScheduledTextView
+import com.yuan.nyctransit.utils.dpToPx
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -47,6 +48,14 @@ class ScheduleView : ConstraintLayout {
 
     var stopTV: TextView
 
+    private var topExtendView: View
+
+    var firstView = false
+    set(value) {
+        if (value) topExtendView.visibility = View.VISIBLE
+        else topExtendView.visibility = View.GONE
+    }
+
     var routeColor: String = "000000"
         set(value) {
             var intColor = Color.parseColor("#$value")
@@ -65,6 +74,13 @@ class ScheduleView : ConstraintLayout {
     init {
 
         setBackgroundColor(ContextCompat.getColor(context, R.color.scheduleViewPrimaryColor))
+
+        topExtendView = View(context).apply {
+            id = View.generateViewId()
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, dpToPx(context, 20).toInt())
+            visibility = View.GONE
+        }
+        addView(topExtendView)
 
         val lineBorder = View(context).apply {
             id = View.generateViewId()
@@ -109,6 +125,14 @@ class ScheduleView : ConstraintLayout {
             it.clone(this)
         }
 
+        //topExtendView
+        set.connect(
+            topExtendView.id,
+            ConstraintSet.TOP,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.TOP
+        )
+
         //vehicleImageView
         set.connect(
             vehicleImageView.id,
@@ -120,8 +144,8 @@ class ScheduleView : ConstraintLayout {
         set.connect(
             vehicleImageView.id,
             ConstraintSet.TOP,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.TOP,
+            topExtendView.id,
+            ConstraintSet.BOTTOM,
             firstRowTopMargin
         )
 
@@ -136,8 +160,8 @@ class ScheduleView : ConstraintLayout {
         set.connect(
             tripHeadSignTV.id,
             ConstraintSet.TOP,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.TOP,
+            topExtendView.id,
+            ConstraintSet.BOTTOM,
             firstRowTopMargin
         )
 
@@ -152,8 +176,8 @@ class ScheduleView : ConstraintLayout {
         set.connect(
             realTimeUpdateTV.id,
             ConstraintSet.TOP,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.TOP,
+            topExtendView.id,
+            ConstraintSet.BOTTOM,
             firstRowTopMargin
         )
 
