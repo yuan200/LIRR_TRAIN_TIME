@@ -11,6 +11,9 @@
         <variable
             name="showNearByOptions"
             type="Boolean" />
+        <variable
+            name="nearbyFragment"
+            type="com.yuan.nyctransit.ui.dashboard.NearbyFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,6 +66,7 @@
             android:textColor="@color/textWhiteColor"
             android:textSize="20sp"
             android:visibility="@{showNearByOptions ? View.VISIBLE : View.GONE}"
+            android:onClick="@{() -> nearbyFragment.onSearchButtonClicked()}"
             app:layout_constraintStart_toEndOf="@+id/searchButton"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yuan.nyctransit.features.lirr.LirrViewModel
 import com.yuan.nyctransit.features.lirr.LirrViewModelFactory
+import com.yuan.nyctransit.features.lirr.search.SearchFragment
 import com.yuan.nyctransit.platform.PermissionsActivity
 
 class MainActivity : PermissionsActivity(){
@@ -36,5 +37,12 @@ class MainActivity : PermissionsActivity(){
         grantResults: IntArray
     ) {
         permissionsManager.processResult(requestCode, permissions, grantResults)
+    }
+
+    fun openSearchFragment() {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        val searchFragment = SearchFragment.newInstance()
+        fragmentTransaction.add(R.id.nav_host_fragment, searchFragment).commit()
     }
 }
