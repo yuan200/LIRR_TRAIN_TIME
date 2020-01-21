@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.yuan.nyctransit.MainActivity
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.databinding.FragmentNearbyBinding
 import com.yuan.nyctransit.features.lirr.LirrFeed
@@ -87,6 +88,7 @@ class NearbyFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentNearbyBinding>(inflater, R.layout.fragment_nearby, container,false)
         binding.lifecycleOwner = this
         binding.viewModel = nearbyViewModel
+        binding.nearbyFragment = this
         val root = binding.root
 //        addressSearchBar = root.findViewById(R.id.address_search_bar)
 
@@ -220,4 +222,10 @@ class NearbyFragment : Fragment() {
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
+    fun onSearchButtonClicked() {
+        (activity as MainActivity).openSearchFragment()
+    }
+
+    fun getMyText(): String = "hhhhhhhhhhh"
 }
