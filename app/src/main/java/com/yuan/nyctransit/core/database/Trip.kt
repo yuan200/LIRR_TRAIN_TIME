@@ -14,7 +14,7 @@ data class Trip(
     @ColumnInfo("service_id") @Json(name = "service_id") var serviceId: String,
     @PrimaryKey @ColumnInfo("trip_id") @Json(name = "trip_id") var tripId: String,
     @ColumnInfo("trip_headsign") @Json(name = "trip_headsign") var tripHeadsign: String,
-    @ColumnInfo("trip_short_name") @Json(name = "trip_short_name") var tripShortName: String,
+    @ColumnInfo("trip_short_name") @Json(name = "trip_short_name") var tripShortName: String?,
     @ColumnInfo("direction_id") @Json(name = "direction_id") var directionId: String,
     @ColumnInfo("shape_id") @Json(name = "shape_id") var shapeId: String?
 )
