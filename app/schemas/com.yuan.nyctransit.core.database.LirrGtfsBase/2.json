@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "5f0c20ef242599bed4a8910e59445822",
+    "identityHash": "68e4efe3d3a0bb924f6639dc557d032b",
     "entities": [
       {
         "tableName": "gtfs_overview",
@@ -94,7 +94,7 @@
       },
       {
         "tableName": "trip",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` TEXT NOT NULL, `service_id` TEXT NOT NULL, `trip_id` TEXT NOT NULL, `trip_headsign` TEXT NOT NULL, `trip_short_name` TEXT NOT NULL, `direction_id` TEXT NOT NULL, `shape_id` TEXT, PRIMARY KEY(`trip_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` TEXT NOT NULL, `service_id` TEXT NOT NULL, `trip_id` TEXT NOT NULL, `trip_headsign` TEXT NOT NULL, `trip_short_name` TEXT, `direction_id` TEXT NOT NULL, `shape_id` TEXT, PRIMARY KEY(`trip_id`))",
         "fields": [
           {
             "fieldPath": "routeId",
@@ -124,7 +124,7 @@
             "fieldPath": "tripShortName",
             "columnName": "trip_short_name",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "directionId",
@@ -280,7 +280,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5f0c20ef242599bed4a8910e59445822')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '68e4efe3d3a0bb924f6639dc557d032b')"
     ]
   }
 }
