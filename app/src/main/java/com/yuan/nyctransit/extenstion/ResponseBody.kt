@@ -49,11 +49,13 @@ fun ResponseBody.responseBodyToStopTimeUpdateView(
                             }
 
                             val tripJob = CoroutineScope(Dispatchers.IO).async {
-                                db?.tripDao()?.getByTripId(tripId)!!.tripHeadsign
+                                //todo hardcode..
+                                db?.tripDao()?.getByTripId(tripId)?.tripHeadsign ?: "trip head sign null"
                             }
 
                             val stopTimeJob = CoroutineScope(Dispatchers.IO).async {
-                                db?.stopTimeDao()!!.getArrivalTime(tripId, stopId).arrivalTime
+                                //todo "00:00" hardcode..
+                                db?.stopTimeDao()?.getArrivalTime(tripId, stopId)?.arrivalTime ?: "00:00"
                             }
                             CoroutineScope(Dispatchers.Main).launch {
                                 stopName = job.await()
