@@ -15,6 +15,9 @@ interface StopDao {
     @Query("SELECT * FROM STOP")
     fun getAll(): List<Stop>
 
+    @Query("SELECT stop_name FROM STOP")
+    fun getAllStopName(): List<String>
+
     @Query("SELECT * FROM stop")
     suspend fun allStops(): List<Stop>
 
