@@ -10,6 +10,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.core.database.LirrGtfsBase
 import com.yuan.nyctransit.databinding.SearchFragmentBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
     private lateinit var stopList: List<String>
@@ -27,7 +30,11 @@ class SearchFragment : Fragment() {
         val binding = DataBindingUtil.inflate<SearchFragmentBinding>(inflater, R.layout.search_fragment,
             container, false)
         val root = binding.root
-        stopList = LirrGtfsBase.getInstance(context!!)!!.stopDao().getAllStopName()
+        CoroutineScope(Dispatchers.IO).launch {
+            stopList = LirrGtfsBase.getInstance(context!!)!!.stopDao().getAllStopName()
+            val stopAdapter = StopAdapter(stopList)
+            binding.listView.adapter = stopAdapter
+        }
         return root
     }
 

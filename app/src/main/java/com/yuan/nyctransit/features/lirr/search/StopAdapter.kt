@@ -1,15 +1,25 @@
 package com.yuan.nyctransit.features.lirr.search
 
+import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Filter
-import android.widget.Filterable
+import androidx.databinding.DataBindingUtil
+import com.yuan.nyctransit.R
+import com.yuan.nyctransit.databinding.RowItemBinding
 
-class StopAdapter(val stopList: List<String>): BaseAdapter(), Filterable {
+class StopAdapter(val stopList: List<String>): BaseAdapter(){
+    private var inflater: LayoutInflater? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (inflater == null) {
+            inflater = parent!!.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        }
+
+        val rowItemBinding = DataBindingUtil.inflate<RowItemBinding>(inflater!!, R.layout.row_item, parent, false)
+        rowItemBinding.stopName.text = stopList[position]
+        return rowItemBinding.root
     }
 
     override fun getItem(position: Int)  = stopList[position]
@@ -18,7 +28,6 @@ class StopAdapter(val stopList: List<String>): BaseAdapter(), Filterable {
 
     override fun getCount() = stopList.size
 
-    override fun getFilter(): Filter {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+//    override fun getFilter(): Filter {
+//    }
 }
