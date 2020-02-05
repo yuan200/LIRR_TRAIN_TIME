@@ -11,11 +11,11 @@ import androidx.databinding.DataBindingUtil
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.databinding.RowItemBinding
 
-class StopAdapter(val stopList: List<String>): BaseAdapter(), Filterable{
+class StopAdapter(var stopList: List<String>): BaseAdapter(), Filterable{
 
     private var inflater: LayoutInflater? = null
 
-    private lateinit var valueFilter: ValueFi
+    private var valueFilter: ValueFilter? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         if (inflater == null) {
@@ -29,24 +29,31 @@ class StopAdapter(val stopList: List<String>): BaseAdapter(), Filterable{
 
     override fun getItem(position: Int)  = stopList[position]
 
-    override fun getItemId(position: Int) = position as Long
+    override fun getItemId(position: Int) = position.toLong()
 
     override fun getCount() = stopList.size
 
     override fun getFilter(): Filter {
+        if (valueFilter == null) valueFilter = ValueFilter()
+        return valueFilter!!
     }
 
-    private class ValueFilter: Filter() {
+    private inner class ValueFilter: Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val result =  FilterResults()
 
             if (constraint != null && constraint.isNotEmpty()) {
-
+                //todo do i have to assign it?
+                result.values = stopList.filter {
+                    it.contains(constraint, true)
+                }
             }
+            return result
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            stopList = results?.values as List<String>
+            notifyDataSetChanged()
         }
 
     }

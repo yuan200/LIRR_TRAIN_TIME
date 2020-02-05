@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -34,6 +35,18 @@ class SearchFragment : Fragment() {
             stopList = LirrGtfsBase.getInstance(context!!)!!.stopDao().getAllStopName()
             val stopAdapter = StopAdapter(stopList)
             binding.listView.adapter = stopAdapter
+            binding.searchView.setOnQueryTextListener(
+                object: SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        stopAdapter.filter.filter(newText)
+                        return false
+                    }
+                }
+            )
         }
         return root
     }
