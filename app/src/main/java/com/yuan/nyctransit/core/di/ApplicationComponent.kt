@@ -12,6 +12,7 @@ import javax.inject.Singleton
         PermissionsModule::class,
         ActivityInjector::class,
         FragmentInjector::class,
+        DummyModule::class,
         ViewModelModule::class]
 )
 interface ApplicationComponent {
