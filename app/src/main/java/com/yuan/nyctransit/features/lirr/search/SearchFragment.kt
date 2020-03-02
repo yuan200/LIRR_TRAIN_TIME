@@ -9,20 +9,22 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.yuan.nyctransit.R
-import com.yuan.nyctransit.core.database.LirrGtfsBase
+import com.yuan.nyctransit.core.database.Stop
 import com.yuan.nyctransit.databinding.SearchFragmentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
-    private lateinit var stopList: List<String>
+    private lateinit var stopList: List<Stop>
 
     companion object {
         fun newInstance() = SearchFragment()
     }
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by lazy {
+        ViewModelProviders.of(this)[SearchViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +34,7 @@ class SearchFragment : Fragment() {
             container, false)
         val root = binding.root
         CoroutineScope(Dispatchers.IO).launch {
-            stopList = LirrGtfsBase.getInstance(context!!)!!.stopDao().getAllStopName()
+            stopList = viewModel.stopList.value!!.toList()
             val stopAdapter = StopAdapter(stopList)
             binding.listView.adapter = stopAdapter
             binding.searchView.setOnQueryTextListener(
@@ -50,12 +52,4 @@ class SearchFragment : Fragment() {
         }
         return root
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-
 }

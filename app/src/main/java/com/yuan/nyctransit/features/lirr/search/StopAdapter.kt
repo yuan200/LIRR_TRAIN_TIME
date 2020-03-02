@@ -9,9 +9,10 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import com.yuan.nyctransit.R
+import com.yuan.nyctransit.core.database.Stop
 import com.yuan.nyctransit.databinding.RowItemBinding
 
-class StopAdapter(var stopList: List<String>): BaseAdapter(), Filterable{
+class StopAdapter(var stopList: List<Stop>): BaseAdapter(), Filterable{
 
     private var inflater: LayoutInflater? = null
 
@@ -23,7 +24,7 @@ class StopAdapter(var stopList: List<String>): BaseAdapter(), Filterable{
         }
 
         val rowItemBinding = DataBindingUtil.inflate<RowItemBinding>(inflater!!, R.layout.row_item, parent, false)
-        rowItemBinding.stopName.text = stopList[position]
+        rowItemBinding.stopName.text = stopList[position].stopName
         return rowItemBinding.root
     }
 
@@ -45,14 +46,14 @@ class StopAdapter(var stopList: List<String>): BaseAdapter(), Filterable{
             if (constraint != null && constraint.isNotEmpty()) {
                 //todo do i have to assign it?
                 result.values = stopList.filter {
-                    it.contains(constraint, true)
+                    it.stopName.contains(constraint, true)
                 }
             }
             return result
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            stopList = results?.values as List<String>
+            stopList = results?.values as List<Stop>
             notifyDataSetChanged()
         }
 
