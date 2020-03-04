@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -18,6 +19,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             CoroutineScope(Dispatchers.IO).launch {
                 withContext(Dispatchers.Main) {
                     this@apply.value = LirrGtfsBase.getInstance(application)!!.stopDao().allStops() as MutableList<Stop>
+                    Timber.d(stopList.value.toString())
                 }
             }
 

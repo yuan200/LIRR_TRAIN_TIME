@@ -34,11 +34,12 @@ class SearchFragment : Fragment() {
         )
         val root = binding.root
         stopList = mutableListOf()
-        viewModel.stopList.observe(viewLifecycleOwner, Observer {
-            stopList = it
-        })
         val stopAdapter = StopAdapter(stopList)
         binding.listView.adapter = stopAdapter
+        viewModel.stopList.observe(viewLifecycleOwner, Observer {
+            stopAdapter.stopList = it
+            stopAdapter.notifyDataSetChanged()
+        })
         binding.searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
