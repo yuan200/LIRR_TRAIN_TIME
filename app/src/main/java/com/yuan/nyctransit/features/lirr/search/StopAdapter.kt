@@ -1,42 +1,39 @@
 package com.yuan.nyctransit.features.lirr.search
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.databinding.DataBindingUtil
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.core.database.Stop
-import com.yuan.nyctransit.databinding.RowItemBinding
 
-class StopAdapter(var stopList: List<Stop>): BaseAdapter(), Filterable{
+class StopAdapter(var stopList: List<Stop>): RecyclerView.Adapter<StopAdapter.SearchItemViewHolder>(), Filterable{
 
     private var inflater: LayoutInflater? = null
 
     private var valueFilter: ValueFilter? = null
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        if (inflater == null) {
-            inflater = parent!!.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        }
-
-        val rowItemBinding = DataBindingUtil.inflate<RowItemBinding>(inflater!!, R.layout.row_item, parent, false)
-        rowItemBinding.stopName.text = stopList[position].stopName
-        return rowItemBinding.root
-    }
-
-    override fun getItem(position: Int)  = stopList[position]
-
-    override fun getItemId(position: Int) = position.toLong()
-
-    override fun getCount() = stopList.size
-
     override fun getFilter(): Filter {
         if (valueFilter == null) valueFilter = ValueFilter()
         return valueFilter!!
+    }
+
+    class SearchItemViewHolder(val item: View): RecyclerView.ViewHolder(item)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.row_item, parent, false)
+        return SearchItemViewHolder(view)
+    }
+
+    override fun getItemCount() = stopList.size
+
+    override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
+        val stopNameTV = holder.item.findViewById<TextView>(R.id.stopName)
+        stopNameTV.text = stopList[position].stopName
     }
 
     private inner class ValueFilter: Filter() {

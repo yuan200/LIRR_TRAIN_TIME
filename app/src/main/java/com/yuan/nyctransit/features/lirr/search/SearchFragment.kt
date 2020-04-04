@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.core.database.Stop
 import com.yuan.nyctransit.databinding.SearchFragmentBinding
@@ -34,7 +35,9 @@ class SearchFragment : Fragment() {
         )
         val root = binding.root
         stopList = mutableListOf()
+        val viewManager = LinearLayoutManager(context)
         val stopAdapter = StopAdapter(stopList)
+        binding.listView.layoutManager = viewManager
         binding.listView.adapter = stopAdapter
         viewModel.stopList.observe(viewLifecycleOwner, Observer {
             stopAdapter.stopList = it
