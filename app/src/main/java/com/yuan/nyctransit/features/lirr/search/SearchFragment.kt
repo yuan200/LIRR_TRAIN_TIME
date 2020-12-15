@@ -1,5 +1,6 @@
 package com.yuan.nyctransit.features.lirr.search
 
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +19,7 @@ import com.yuan.nyctransit.databinding.SearchFragmentBinding
 class SearchFragment : Fragment() {
     private lateinit var stopList: List<Stop>
 
+    private val searchResultVM: SearchResultViewModel by activityViewModels()
     companion object {
         fun newInstance() = SearchFragment()
     }
@@ -37,6 +40,14 @@ class SearchFragment : Fragment() {
         stopList = mutableListOf()
         val viewManager = LinearLayoutManager(context)
         val stopAdapter = StopAdapter(stopList)
+        stopAdapter.clickListener = { lat, lon -> {
+            val location = Location("searchLocation").apply {
+                latitude = lat.toDouble()
+                longitude = lon.toDouble()
+            }
+            searchResultVM.location.value = location
+
+        } }
         binding.listView.layoutManager = viewManager
         binding.listView.adapter = stopAdapter
         viewModel.stopList.observe(viewLifecycleOwner, Observer {

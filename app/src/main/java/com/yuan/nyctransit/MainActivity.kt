@@ -43,6 +43,7 @@ class MainActivity : PermissionsActivity(){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         val searchFragment = SearchFragment.newInstance()
-        fragmentTransaction.add(R.id.nav_host_fragment, searchFragment).commit()
+        fragmentTransaction.add(R.id.nav_host_fragment, searchFragment)
+            .addToBackStack("").commit()
     }
 }

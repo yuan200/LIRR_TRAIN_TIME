@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -38,6 +39,7 @@ import com.yuan.nyctransit.databinding.FragmentNearbyBinding
 import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
 import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
+import com.yuan.nyctransit.features.lirr.search.SearchResultViewModel
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import java.io.IOException
@@ -77,6 +79,8 @@ class NearbyFragment : Fragment() {
     private lateinit var goBackToCurrentLocation: ImageButton
 
     @Inject lateinit var nearbyViewModelFactory: ViewModelProvider.AndroidViewModelFactory
+
+    private val searchResultVM: SearchResultViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -211,6 +215,13 @@ class NearbyFragment : Fragment() {
                 })
             }
         }
+
+        searchResultVM.location.observe(viewLifecycleOwner, Observer {
+            Timber.i("location return from search>>>>>>")
+            nearbyViewModel.currentLocation.value = it
+            val latLng = LatLng(it.latitude, it.longitude)
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+        })
 
     }
 
