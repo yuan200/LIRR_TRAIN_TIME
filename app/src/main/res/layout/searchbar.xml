@@ -57,7 +57,7 @@
 
         <TextView
             android:id="@+id/search_field"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -68,6 +68,7 @@
             android:visibility="@{showNearByOptions ? View.VISIBLE : View.GONE}"
             android:onClick="@{() -> nearbyFragment.onSearchButtonClicked()}"
             app:layout_constraintStart_toEndOf="@+id/searchButton"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

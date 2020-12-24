@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.core.database.Stop
 import com.yuan.nyctransit.databinding.SearchFragmentBinding
+import kotlinx.android.synthetic.main.fragment_nearby.*
 
 class SearchFragment : Fragment() {
     private lateinit var stopList: List<Stop>
@@ -40,20 +41,22 @@ class SearchFragment : Fragment() {
         stopList = mutableListOf()
         val viewManager = LinearLayoutManager(context)
         val stopAdapter = StopAdapter(stopList)
-        stopAdapter.clickListener = { lat, lon -> {
+        stopAdapter.clickListener = { lat, lon ->
             val location = Location("searchLocation").apply {
                 latitude = lat.toDouble()
                 longitude = lon.toDouble()
             }
             searchResultVM.location.value = location
+            fragmentManager?.popBackStackImmediate()
 
-        } }
+        }
         binding.listView.layoutManager = viewManager
         binding.listView.adapter = stopAdapter
         viewModel.stopList.observe(viewLifecycleOwner, Observer {
             stopAdapter.stopList = it
             stopAdapter.notifyDataSetChanged()
         })
+        binding.searchView.isIconifiedByDefault = false
         binding.searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
