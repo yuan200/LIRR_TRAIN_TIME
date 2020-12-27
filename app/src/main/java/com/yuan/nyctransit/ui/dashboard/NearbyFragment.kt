@@ -40,6 +40,7 @@ import com.yuan.nyctransit.features.lirr.LirrFeed
 import com.yuan.nyctransit.features.lirr.ScheduleAdapter
 import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
 import com.yuan.nyctransit.features.lirr.search.SearchResultViewModel
+import com.yuan.nyctransit.utils.bitmapDescriptorFromVector
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import java.io.IOException
@@ -223,15 +224,6 @@ class NearbyFragment : Fragment() {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
         })
 
-    }
-
-    private fun  bitmapDescriptorFromVector(context: Context, vectorResId:Int): BitmapDescriptor {
-        var vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-        vectorDrawable!!.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        var bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        var canvas =  Canvas(bitmap);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     fun onSearchButtonClicked() {

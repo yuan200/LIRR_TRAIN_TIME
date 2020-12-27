@@ -59,7 +59,7 @@
                 <include
                     layout="@layout/searchbar"
                     bind:displayAddress="@{viewModel.displayAddress}"
-                    bind:showNearByOptions="@{viewModel.isMarkerOnCurrentLocation}"
+                    bind:isMyLocation="@{viewModel.isMarkerOnCurrentLocation}"
                     bind:nearbyFragment="@{nearbyFragment}"/>
 
             </androidx.cardview.widget.CardView>

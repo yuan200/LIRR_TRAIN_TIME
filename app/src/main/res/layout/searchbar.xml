@@ -9,7 +9,7 @@
             name="displayAddress"
             type="String" />
         <variable
-            name="showNearByOptions"
+            name="isMyLocation"
             type="Boolean" />
         <variable
             name="nearbyFragment"
@@ -19,7 +19,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@{showNearByOptions ? @color/searchBarPrimaryColor : @color/searchBarSecondaryColor}">
+        android:background="@{isMyLocation ? @color/searchBarPrimaryColor : @color/searchBarSecondaryColor}">
 
         <ImageButton
             android:id="@+id/searchButton"
@@ -30,7 +30,8 @@
             android:background="@android:color/transparent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_search_black_24dp" />
+            android:src="@{isMyLocation ? @drawable/ic_search_black_24dp : @drawable/ic_location_searching_24px}"/>
+<!--todo srcCompat is better than src? but can't use it with datab inding            app:srcCompat= />-->
 
         <TextView
             android:id="@+id/description_textview"
@@ -39,7 +40,7 @@
             android:layout_marginStart="16dp"
             android:text="Options near"
             android:textSize="12sp"
-            android:visibility="@{showNearByOptions ? View.GONE : View.VISIBLE}"
+            android:visibility="@{isMyLocation ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@+id/searchButton"
             tools:layout_editor_absoluteY="16dp" />
 
@@ -51,7 +52,8 @@
             android:text="@{displayAddress}"
             android:textSize="16sp"
             android:textColor="@color/textWhiteColor"
-            android:visibility="@{showNearByOptions ? View.GONE : View.VISIBLE}"
+            android:visibility="@{isMyLocation ? View.GONE : View.VISIBLE}"
+            android:onClick="@{() -> nearbyFragment.onSearchButtonClicked()}"
             app:layout_constraintStart_toEndOf="@+id/searchButton"
             app:layout_constraintTop_toBottomOf="@+id/description_textview" />
 
@@ -65,7 +67,7 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"
             android:textColor="@color/textWhiteColor"
             android:textSize="20sp"
-            android:visibility="@{showNearByOptions ? View.VISIBLE : View.GONE}"
+            android:visibility="@{isMyLocation ? View.VISIBLE : View.GONE}"
             android:onClick="@{() -> nearbyFragment.onSearchButtonClicked()}"
             app:layout_constraintStart_toEndOf="@+id/searchButton"
             app:layout_constraintEnd_toEndOf="parent"
