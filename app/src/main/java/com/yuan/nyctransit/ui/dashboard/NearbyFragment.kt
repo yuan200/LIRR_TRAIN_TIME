@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yuan.nyctransit.MainActivity
 import com.yuan.nyctransit.R
 import com.yuan.nyctransit.databinding.FragmentNearbyBinding
@@ -38,6 +40,7 @@ import com.yuan.nyctransit.features.lirr.ScheduleAdapter
 import com.yuan.nyctransit.features.lirr.StopTimeUpdateView
 import com.yuan.nyctransit.features.lirr.search.SearchResultViewModel
 import com.yuan.nyctransit.utils.bitmapDescriptorFromVector
+import com.yuan.nyctransit.utils.convertPixelsToDp
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import java.io.IOException
@@ -92,7 +95,19 @@ class NearbyFragment : Fragment() {
         binding.viewModel = nearbyViewModel
         binding.nearbyFragment = this
         val root = binding.root
-//        addressSearchBar = root.findViewById(R.id.address_search_bar)
+
+        var bottomSheet = root.findViewById<View>(R.id.bottom_sheet)
+        BottomSheetBehavior.from(bottomSheet).apply {
+            addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    Timber.i("bottom sheet height: " + convertPixelsToDp(bottomSheet.height.toFloat(), context!!))
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
+
+            })
+        }
 
         root.findViewById<ImageButton>(R.id.searchButton).setOnClickListener {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(currentUserLocation.latitude, currentUserLocation.longitude),16f))
@@ -104,14 +119,6 @@ class NearbyFragment : Fragment() {
         shimmerViewContainer = root.findViewById(R.id.shimmer_view_container)
 
         shimmerView = root.findViewById(R.id.shimmer_view)
-
-//        (activity as MainActivity).navView.post {
-//            val bottomNavHeight = (activity as MainActivity).navView.measuredHeight
-//            val layoutParam = (shimmerView.layoutParams as ViewGroup.MarginLayoutParams).apply {
-//                bottomMargin = bottomNavHeight
-//            }
-//            shimmerView.layoutParams = layoutParam
-//        }
 
 
         //todo study clean architecure simple's extension usage
