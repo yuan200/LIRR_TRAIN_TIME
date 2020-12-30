@@ -15,6 +15,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.core.text.isDigitsOnly
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -79,7 +80,8 @@ class NearbyFragment : Fragment() {
 
     private lateinit var goBackToCurrentLocation: ImageButton
 
-    @Inject lateinit var nearbyViewModelFactory: ViewModelProvider.AndroidViewModelFactory
+    @Inject
+    lateinit var nearbyViewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     private val searchResultVM: SearchResultViewModel by activityViewModels()
 
@@ -90,7 +92,12 @@ class NearbyFragment : Fragment() {
     ): View? {
         AndroidSupportInjection.inject(this)
 
-        val binding = DataBindingUtil.inflate<FragmentNearbyBinding>(inflater, R.layout.fragment_nearby, container,false)
+        val binding = DataBindingUtil.inflate<FragmentNearbyBinding>(
+            inflater,
+            R.layout.fragment_nearby,
+            container,
+            false
+        )
         binding.lifecycleOwner = this
         binding.viewModel = nearbyViewModel
         binding.nearbyFragment = this
@@ -100,7 +107,12 @@ class NearbyFragment : Fragment() {
         BottomSheetBehavior.from(bottomSheet).apply {
             addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    Timber.i("bottom sheet height: " + convertPixelsToDp(bottomSheet.height.toFloat(), context!!))
+                    Timber.i(
+                        "bottom sheet height: " + convertPixelsToDp(
+                            bottomSheet.height.toFloat(),
+                            context!!
+                        )
+                    )
                 }
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
@@ -110,7 +122,14 @@ class NearbyFragment : Fragment() {
         }
 
         root.findViewById<ImageButton>(R.id.searchButton).setOnClickListener {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(currentUserLocation.latitude, currentUserLocation.longitude),16f))
+            mMap.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        currentUserLocation.latitude,
+                        currentUserLocation.longitude
+                    ), 16f
+                )
+            )
             nearbyViewModel.isMarkerOnCurrentLocation.value = true
         }
 
@@ -172,16 +191,24 @@ class NearbyFragment : Fragment() {
                     nearbyViewModel.feed.observe(this@NearbyFragment, Observer {
                         shimmerView.stopShimmer()
                         shimmerViewContainer.visibility = View.GONE
-                        viewAdapter.collection = it?: mutableListOf(StopTimeUpdateView.placeHolder())
+                        viewAdapter.collection =
+                            it ?: mutableListOf(StopTimeUpdateView.placeHolder())
                     })
                 }
 
                 val latlng = LatLng(currentMapLocation.latitude, currentMapLocation.longitude)
                 //todo sometime multiple marker appears
-                mMap.addMarker(MarkerOptions()
-                    .icon(bitmapDescriptorFromVector(context as Context, R.drawable.circle_drawable))
-                    .position(latlng)
-                    .title("You are here"))
+                mMap.addMarker(
+                    MarkerOptions()
+                        .icon(
+                            bitmapDescriptorFromVector(
+                                context as Context,
+                                R.drawable.circle_drawable
+                            )
+                        )
+                        .position(latlng)
+                        .title("You are here")
+                )
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 16f))
                 mMap.setOnCameraIdleListener {
                     val middleLatLng = mMap.cameraPosition.target
@@ -190,30 +217,17 @@ class NearbyFragment : Fragment() {
                         longitude = middleLatLng.longitude
                     }
                     nearbyViewModel.refreshSchedualView()
-                    val geocoder = Geocoder(context)
-                    var geoResult: List<Address>
-                    try {
-                        geoResult = geocoder.getFromLocation(middleLatLng.latitude, middleLatLng.longitude, 1)
-                    } catch (e: IOException) {
-                        geoResult = listOf(Address(Locale.US))
-                    }
-                    if (geoResult.isNotEmpty()) {
-                        var streeNum = geoResult[0].subThoroughfare?: ""
-                        var stree = geoResult[0].thoroughfare?: ""
-                        val displayAddress = streeNum + " " + stree
-                        nearbyViewModel.displayAddress.value = displayAddress
-                    }
+                    getGeoResult(middleLatLng)
                     nearbyViewModel.fetchingState.value = false
                 }
 
                 mMap.setOnCameraMoveStartedListener {
                     nearbyViewModel.fetchingState.value = true
                     nearbyViewModel.isMarkerOnCurrentLocation.value = false
-                    Timber.i("camera was moved")
                 }
 
                 nearbyViewModel.fetchingState.observe(this@NearbyFragment, Observer {
-                    when(it) {
+                    when (it) {
                         true -> fetchIndicatorView.visibility = View.VISIBLE
                         false -> fetchIndicatorView.visibility = View.GONE
                     }
@@ -222,17 +236,35 @@ class NearbyFragment : Fragment() {
         }
 
         searchResultVM.location.observe(viewLifecycleOwner, Observer {
-            Timber.i("location return from search>>>>>>")
             nearbyViewModel.currentLocation.value = it
             val latLng = LatLng(it.latitude, it.longitude)
+            getGeoResult(latLng)
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
         })
 
     }
 
+    private fun getGeoResult(middleLatLng: LatLng) {
+        val geocoder = Geocoder(context)
+        var geoResult: List<Address>
+        try {
+            geoResult = geocoder.getFromLocation(middleLatLng.latitude, middleLatLng.longitude, 1)
+        } catch (e: IOException) {
+            geoResult = listOf(Address(Locale.US))
+        }
+        if (geoResult.isNotEmpty()) {
+            var displayAddress =
+                if (geoResult[0].featureName.isNotEmpty() && !geoResult[0].featureName.isDigitsOnly()) geoResult[0].featureName
+                else {
+                    var streetNum = geoResult[0].subThoroughfare ?: ""
+                    var street = geoResult[0].thoroughfare ?: ""
+                    "$streetNum $street"
+                }
+            nearbyViewModel.displayAddress.value = displayAddress
+        }
+    }
+
     fun onSearchButtonClicked() {
         (activity as MainActivity).openSearchFragment()
     }
-
-    fun getMyText(): String = "hhhhhhhhhhh"
 }
