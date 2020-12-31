@@ -21,18 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:translationY="-7dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="21dp"
-                android:src="@{viewModel.fetchingState ? @drawable/circle_drawable_transparent : @drawable/circle_drawable}" />
-        </FrameLayout>
-
         <LinearLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
@@ -49,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
-                android:translationY="7dp"
+                android:layout_marginBottom="-7dp"
                 app:cardCornerRadius="3dp">
 
                 <include
