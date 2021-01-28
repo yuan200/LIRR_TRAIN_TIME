@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "970238779668",
+    "project_id": "lirr-train-time",
+    "storage_bucket": "lirr-train-time.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970238779668:android:76dce2bb68403e4a132201",
+        "android_client_info": {
+          "package_name": "com.yuan.lirrtraintime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "970238779668-d38n0lhgqqtav51mcd43uc2o3r8qptt3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6UZBKR90eguZfaOmfflzcMhyPYehbz8Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "970238779668-d38n0lhgqqtav51mcd43uc2o3r8qptt3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
